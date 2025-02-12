@@ -1,0 +1,9 @@
+ollama
+markitdown
+selenium
+beautifulsoup4
+webdriver-manager
+duckduckgo_search
+black
+ipywidgets
+
