@@ -14,7 +14,7 @@ class ExampleAgent(Agent):
         return f"You are an example agent and your task is to verify that the system works"
 
     def prompt(self):
-        return f"Give a message that says something verifying that the system works."
+        return f"Write 1 if the system works and 0 if something went wrong"
 
     def schema(self):
         class VerificationMessage(BaseModel):
@@ -25,7 +25,7 @@ class ExampleAgent(Agent):
 
         return VerificationSchema.model_json_schema()
 
-    def __call__(self, output_key: str = "output"):
+    def __call__(self, output_key: str = "verification"):
         output = self.generate(
             system_prompt=self.system(),
             prompt=self.prompt(),
