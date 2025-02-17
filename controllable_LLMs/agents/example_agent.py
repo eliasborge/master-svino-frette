@@ -1,35 +1,31 @@
 from pydantic import BaseModel, conlist
 from typing import List
-from controllable_LLMs.agents.agent import Agent
+from .agent import Agent
 
 
-class LabelerAgent(Agent):
+class ExampleAgent(Agent):
     def __init__(
-        self, model, topic: str, num_labels: int
+        self, model, 
     ):
         super().__init__(model)
-        self.topic = topic
-        self.num_labels = num_labels
+       
 
     def system(self):
-        return f"SYSTEM MESSAGE"
+        return f"You are an example agent and your task is to verify that the system works"
 
     def prompt(self):
-        return f"PROMPT"
+        return f"Give a message that says something verifying that the system works."
 
-    def schema(self): # EXAMPLE WITH LABEL GENERATION
-        class DatasetLabel(BaseModel):
-            name: str
-            description: str
-            possible_values: List[str]
+    def schema(self):
+        class VerificationMessage(BaseModel):
+            message: str
 
-        class LabelerSchema(BaseModel):
-            # labels: List[DatasetLabel]
-            labels: conlist(DatasetLabel, min_length=self.num_labels, max_length=self.num_labels)
+        class VerificationSchema(BaseModel):
+            verification: VerificationMessage
 
-        return LabelerSchema.model_json_schema()
+        return VerificationSchema.model_json_schema()
 
-    def __call__(self, output_key: str = "OUTPUT_VARIABLE_NAME"):
+    def __call__(self, output_key: str = "output"):
         output = self.generate(
             system_prompt=self.system(),
             prompt=self.prompt(),

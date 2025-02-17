@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any
-from api_extraction import generate
+from controllable_LLMs.api_extraction import generate
 
 class Agent(ABC):
     def __init__(self, model: str):
