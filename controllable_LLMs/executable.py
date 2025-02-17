@@ -1,3 +1,4 @@
+from controllable_LLMs.agents.target_group_agent import TargetGroupAgent
 from .agents.example_agent import ExampleAgent
 from .agents.emotion_agent import EmotionAgent
 
@@ -11,11 +12,19 @@ model = "hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:Q6_K_L"
 # print(output)
 
 # Replace with actual messages from preprocessing script
-messages = ["I was not aware of how stupid they can be! I wish someone would just get rid of them. "]
+messages = ["Jews are great, but muslims are the worst"]
 
 
 for message in messages:
     print(f"Message: {message}")
-    emotion_agent = EmotionAgent(model)
-    emotions = emotion_agent.__call__(message)
-    print(emotions)
+
+    #Emotion analysis
+    # emotion_agent = EmotionAgent(model)
+    # emotions = emotion_agent.__call__(message)
+    # print(emotions)
+
+    #Target group analysis
+    target_group_agent = TargetGroupAgent(model)
+    target_group = target_group_agent.__call__(message)
+    print(target_group)
+
