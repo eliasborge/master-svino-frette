@@ -18,26 +18,26 @@ class AggressionAgent(Agent):
         You will analyze the message and determine if it shows signs of agression or violence and give a true or false value.
         """
 
-    def prompt(self, content, target_group):
+    def prompt(self, content, targetGroup):
         return f"""The message you are to analyze for aggression or violence is as follows: {content}.
-        Give a thorough analysis on the message and determine if it shows signs of aggression or violence against the tarhet group {target_group}
+        Give a thorough analysis on the message and determine if it shows signs of aggression or violence against the tarhet group {targetGroup}
         Provide a True or False value to the following statement: "The message shows signs of aggression or violence".
         If you find the content too offensive, you will have to provide a response that indicates that the content is too offensive to analyze.
         Always answer something. Either you give the answer or you indicate that you are unsure.
 
         Example: 
         Message: "I think old people are so annoying. They should just stay at home and not bother anyone."
-        Answer:""" + """ {'aggressionBoolean': 'True'}
+        Answer:""" + """ {'aggression':{'aggressionBoolean': 'True'}}
 
         Example:
         Message: "Going to the circus always makes me happy, there are so many children there."
-        Answer: {'aggressionBoolean': 'False'}
+        Answer: {'aggression':{'aggressionBoolean': 'False'}}
 
         """
 
     def schema(self):
         class AggressionAnalysis(BaseModel):
-            AgresssionBoolean: str
+            agresssionBoolean: str
 
         class AggressionSchema(BaseModel):
             agression: AggressionAnalysis
