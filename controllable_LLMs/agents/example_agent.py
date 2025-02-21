@@ -30,9 +30,7 @@ class ExampleAgent(Agent):
             system_prompt=self.system(),
             prompt=self.prompt(),
             schema=self.schema(),
-            model=self.model,
-            num_ctx=200,
-            temperature=0.0,
+            model=self.model
         )
         if output:
             return output[output_key]
