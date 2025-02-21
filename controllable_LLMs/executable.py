@@ -2,6 +2,7 @@ from controllable_LLMs.agents.target_group_agent import TargetGroupAgent
 from .agents.example_agent import ExampleAgent
 from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
+from .agents.aggression_agent import AggressionAgent
 
 model = "hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q6_K_L"
 
@@ -35,5 +36,6 @@ for message in messages:
     print(otherness)
    
     if(otherness['othernessBoolean'] == "True"):
-        #
-        print("something")
+        aggression_agent = AggressionAgent(model)
+        aggression = aggression_agent.__call__(message, otherness['targetGroup'])
+        print(aggression)
