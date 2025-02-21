@@ -14,16 +14,16 @@ output = example_agent.__call__()
 print(output)
 
 # Replace with actual messages from preprocessing script
-messages = ["That's hilarious.  The two fags that replied before me need to wash the sand outta their vaginas", "part of secrete globalist brainwashing plot to purify the west of slav slave race, pure mix new master race"]
+messages = ["There is a special place in hell for people who like cats! They smell weird and the look like dick licking cunts. Off with their heads!!!!!!!👿👿👿👿","That's hilarious.  The two fags that replied before me can go and off themselves. there are too many to begin with", "I don't hate Kamala Harris! She really did her best effort"]
 
 
 for message in messages:
     print(f"Message: {message}")
 
     #Emotion analysis
-    # emotion_agent = EmotionAgent(model)
-    # emotions = emotion_agent.__call__(message)
-    # print(emotions)
+    emotion_agent = EmotionAgent(model)
+    emotions = emotion_agent.__call__(message)
+    print(emotions)
 
     #Target group analysis
     # target_group_agent = TargetGroupAgent(model)
@@ -35,7 +35,7 @@ for message in messages:
     otherness = otherness_agent.__call__(message)
     print(otherness)
    
-    if(otherness['othernessBoolean'] == "True"):
+    if( otherness['othernessBoolean'] == "True" or "False"):
         aggression_agent = AggressionAgent(model)
         aggression = aggression_agent.__call__(message, otherness['targetGroup'])
         print(aggression)
