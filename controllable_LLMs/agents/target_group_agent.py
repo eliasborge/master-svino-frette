@@ -36,9 +36,7 @@ class TargetGroupAgent(Agent):
             system_prompt=self.system(),
             prompt=self.prompt(content),
             schema=self.schema(),
-            model=self.model,
-            num_ctx=2000,
-            temperature=0.0,
+            model=self.model
         )
         print(output)
         if output:
