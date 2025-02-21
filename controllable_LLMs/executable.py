@@ -2,7 +2,7 @@ from controllable_LLMs.agents.target_group_agent import TargetGroupAgent
 from .agents.example_agent import ExampleAgent
 from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
-from .agents.aggression_agent import AggressionAgent
+from .agents.intent_agent import IntentAgent
 
 model = "hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q6_K_L"
 
@@ -21,9 +21,9 @@ for message in messages:
     print(f"Message: {message}")
 
     #Emotion analysis
-    emotion_agent = EmotionAgent(model)
-    emotions = emotion_agent.__call__(message)
-    print(emotions)
+    #emotion_agent = EmotionAgent(model)
+    #emotions = emotion_agent.__call__(message)
+    #print(emotions)
 
     #Target group analysis
     # target_group_agent = TargetGroupAgent(model)
@@ -36,6 +36,6 @@ for message in messages:
     print(otherness)
    
     if( otherness['othernessBoolean'] == "True" or "False"):
-        aggression_agent = AggressionAgent(model)
-        aggression = aggression_agent.__call__(message, otherness['targetGroup'])
-        print(aggression)
+        intent_agent = IntentAgent(model)
+        intent = intent_agent.__call__(message, otherness['targetGroup'])
+        print(intent)

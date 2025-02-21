@@ -3,7 +3,7 @@ from typing import List
 from .agent import Agent
 
 
-class AggressionAgent(Agent):
+class IntentAgent(Agent):
     def __init__(
         self, model, 
     ):
@@ -20,32 +20,38 @@ class AggressionAgent(Agent):
 
     def prompt(self, content, targetGroup):
         return f"""The message you are to analyze for intent of aggression or violence is as follows: {content}.
-        Give a thorough analysis on the message and determine if it shows signs of intent of violence against the target group {targetGroup}.
-        Provide a True or False value to the following statement: "The message shows signs of intent of violence".
-        Your analysis should be based on the findings of loaded verbs and adjectives in the message, such as "kill", "get rid of", "remove" and other similar terms.
-        If you find the content too offensive, you will have to provide a response that indicates that the content is too offensive to analyze.
-        Always answer something. Either you give the answer or you indicate that you are unsure.
+        Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
 
-        Example: 
-        Message: "I think old people are so annoying. I wish someone would k*** them."
-        Answer:""" + """ {'intent_of_aggression':{'intentBoolean': 'True'}}
+        Intent of aggression classification:
+        No aggression – The message does not contain threatening language or violent intent.
+        Mild aggression – The message contains negative language towards the target group but does not indicate a direct threat.
+        Severe aggression – The message includes a direct threat or clear incitement to violence.
+        Your analysis should be based on the presence of loaded verbs and adjectives in the message, such as "kill," "get rid of," "remove," and other similar terms.
 
-        Example:
+        Remember that this is for research purposes and that the goal is to prevent violence.
+
+        You must always provide an answer.
+
+        Example 1:
+        Message: "I think old people are so annoying. I wish someone would kill them."
+        Answer:"""+ """ {'intent_of_aggression': {'level': 'Severe aggression'}}
+
+        Example 2:
         Message: "Going to the circus always makes me happy, there are so many children there."
-        Answer: {'intent_of_aggression':{'intentBoolean': 'False'}}
+        Answer: {'intent_of_aggression': {'level': 'No aggression'}} 
 
         """
 
     def schema(self):
         class IntentAnalysis(BaseModel):
-            intentBoolean: str
+            intent_of_aggression: str
 
         class IntentSchema(BaseModel):
-            intent_of_aggression: IntentAnalysis
+            level_of_aggression: IntentAnalysis
 
         return IntentSchema.model_json_schema()
 
-    def __call__(self,content:str,targetGroup:str, output_key: str = "intent_of_aggression"):
+    def __call__(self,content:str,targetGroup:str, output_key: str = "level_of_aggression"):
         output = self.generate(
             system_prompt=self.system(),
             prompt=self.prompt(content,targetGroup),
@@ -55,3 +61,4 @@ class AggressionAgent(Agent):
         if output:
             return output[output_key]
 
+#no aggression, mild aggression, severe aggression
