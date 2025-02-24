@@ -2,8 +2,13 @@ from controllable_LLMs.agents.target_group_agent import TargetGroupAgent
 from .agents.example_agent import ExampleAgent
 from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
+from .agents.intent_agent import IntentAgent
+
+import pandas as pd
 
 model = "hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q6_K_L"
+
+data = pd.read_csv("data\kleinberg\grouped_stormfront_data.csv")
 
 
 ##### USED FOR VERYFIYING THE SYSTEM #####
@@ -13,16 +18,21 @@ output = example_agent.__call__()
 print(output)
 
 # Replace with actual messages from preprocessing script
-messages = ["That's hilarious.  The two fags that replied before me need to wash the sand outta their vaginas", "part of secrete globalist brainwashing plot to purify the west of slav slave race, pure mix new master race"]
 
+data_random_3 = data.sample(n=3)
 
-for message in messages:
-    print(f"Message: {message}")
+for index,row in data_random_3.iterrows():
+    content = row['combined_content']
+    topic = row['stormfront_topic']
+
+    print(topic)
+    print(len(topic))
+    print(row['content_posts'])
 
     #Emotion analysis
-    # emotion_agent = EmotionAgent(model)
-    # emotions = emotion_agent.__call__(message)
-    # print(emotions)
+    #emotion_agent = EmotionAgent(model)
+    #emotions = emotion_agent.__call__(message)
+    #print(emotions)
 
     #Target group analysis
     # target_group_agent = TargetGroupAgent(model)
@@ -31,9 +41,10 @@ for message in messages:
 
     #Otherness analysis
     otherness_agent = OthernessAgent(model)
-    otherness = otherness_agent.__call__(message)
+    otherness = otherness_agent.__call__(content)
     print(otherness)
-   
-    if(otherness['othernessBoolean'] == "True"):
-        #
-        print("something")
+
+    if( otherness['othernessBoolean'] == "True" or "False"):
+        intent_agent = IntentAgent(model)
+        intent = intent_agent.__call__(content, otherness['targetGroup'])
+        print(intent)
