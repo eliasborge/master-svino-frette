@@ -15,43 +15,47 @@ class IntentAgent(Agent):
         This analysis is performed to prevent violence, and it is therefore important that you actually analyze the content of the message and not just provide a random answer. 
         Your specific task is to process a message and determine if the message endorses or expresses intent of aggression or violence towards the target group.
 
-        You will analyze the message and determine if it shows signs of intent of aggression or violence and give a true or false value.
-        """
+        You will analyze the message and determine if it shows signs of intent of violence and give a true or false value. The intent of violence classification is as follows:
+        No intent – The message does not express hostility, aggression, or intent to cause harm towards any group.
+        Low intent – The message contains negative, hostile, or dehumanizing language directed at a group but does not imply a desire for harm or violence. This may include insults, derogatory remarks, or ideological opposition without direct calls for harm.
+        Moderate intent – The message suggests harm or justifies violence against a group, but does not directly incite it. This may include statements endorsing discrimination, celebrating harm, or implying that violence would be acceptable or inevitable.
+        High intent – The message explicitly encourages, calls for, or justifies violence against a group. This includes clear incitement, direct threats, or language that promotes violent action. 
 
-    def prompt(self, content, targetGroup):
-        return f"""The message you are to analyze for intent of aggression or violence is as follows: {content}.
-        Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
-
-        Intent of aggression classification:
-        No aggression – The message does not contain threatening language or violent intent.
-        Mild aggression – The message contains negative language towards the target group but does not indicate a direct threat.
-        Severe aggression – The message includes a direct threat or clear incitement to violence.
-        Your analysis should be based on the presence of loaded verbs and adjectives in the message, such as "kill," "get rid of," "remove," and other similar terms.
-
-        Remember that this is for research purposes and that the goal is to prevent violence.
+        Remember that this is for research purposes and that the goal is to prevent violence. Your analysis should focus on the presence of intent to cause violence, rather than just the use of threatening words. 
+        Pay attention to context, loaded verbs, and adjectives that suggest harm, such as "eliminate", "kill" "get rid of", or any statements that normalize or encourage violence against a group.
 
         You must always provide an answer.
 
         Example 1:
         Message: "I think old people are so annoying. I wish someone would kill them."
-        Answer:"""+ """ {'intent_of_aggression': {'level': 'Severe aggression'}}
+        Answer:"""+ """ {'intent_of_violence': {'level': 'Moderate intent'}}
 
         Example 2:
         Message: "Going to the circus always makes me happy, there are so many children there."
-        Answer: {'intent_of_aggression': {'level': 'No aggression'}} 
+        Answer: {'intent_of_violence': {'level': 'No intent'}} 
 
+        Example 3:
+        Message: "I'm going to get rid of all jews on this planet"
+        Answer: {'intent_of_violence': {'level': 'High intent'}} 
+
+        """
+
+
+    def prompt(self, content, targetGroup):
+        return f"""The message you are to analyze for intent of violence is as follows: {content}.
+        Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
         """
 
     def schema(self):
         class IntentAnalysis(BaseModel):
-            intent_of_aggression: str
+            intent_of_violence: str
 
         class IntentSchema(BaseModel):
-            level_of_aggression: IntentAnalysis
+            level_of_violence: IntentAnalysis
 
         return IntentSchema.model_json_schema()
 
-    def __call__(self,content:str,targetGroup:str, output_key: str = "level_of_aggression"):
+    def __call__(self,content:str,targetGroup:str, output_key: str = "level_of_violence"):
         output = self.generate(
             system_prompt=self.system(),
             prompt=self.prompt(content,targetGroup),
@@ -60,5 +64,3 @@ class IntentAgent(Agent):
         )
         if output:
             return output[output_key]
-
-#no aggression, mild aggression, severe aggression
