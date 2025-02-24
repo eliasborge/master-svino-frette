@@ -1,3 +1,4 @@
+from controllable_LLMs.agents.framing_agent import FramingAgent
 from controllable_LLMs.agents.target_group_agent import TargetGroupAgent
 from .agents.example_agent import ExampleAgent
 from .agents.emotion_agent import EmotionAgent
@@ -40,6 +41,17 @@ for index,row in data_random_3.iterrows():
     # print(target_group)
 
     #Otherness analysis
+    # otherness_agent = OthernessAgent(model)
+    # otherness = otherness_agent.__call__(message)
+    # print(otherness)
+   
+    # if(otherness['othernessBoolean'] == "True"):
+        
+    #Framing agent
+    # framing_agent = FramingAgent(model)
+    # framing = framing_agent.__call__(message)
+    # print(framing)
+
     otherness_agent = OthernessAgent(model)
     otherness = otherness_agent.__call__(content)
     print(otherness)
