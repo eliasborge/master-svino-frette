@@ -7,9 +7,9 @@ from .agents.intent_agent import IntentAgent
 
 import pandas as pd
 
-model = "hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q6_K_L"
+model = "hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:Q6_K_L"
 
-data = pd.read_csv("data\grouped_data_from_stormfront\grouped_stormfront_data_2014.csv")
+data = pd.read_csv("data/grouped_data_from_stormfront/grouped_stormfront_data_2014.csv")
 
 
 ##### USED FOR VERYFIYING THE SYSTEM #####
@@ -21,14 +21,21 @@ print(output)
 # Replace with actual messages from preprocessing script
 
 data_random_3 = data.sample(n=3)
+first_item_content_list_str = eval(data_random_3.iloc[0]['content_list'])
+print(first_item_content_list_str)
+
+
+
 
 for index,row in data_random_3.iterrows():
-    content = row['combined_content']
+    
+    content_list = eval(row['content_list'])
+    content = "".join(content_list)
     topic = row['stormfront_topic']
 
     print(topic)
     print(len(topic))
-    print(row['content_posts'])
+    print(row['posts'])
 
     #Emotion analysis
     #emotion_agent = EmotionAgent(model)
@@ -47,16 +54,28 @@ for index,row in data_random_3.iterrows():
    
     # if(otherness['othernessBoolean'] == "True"):
     
-    #Framing agent
-    framing_agent = FramingAgent(model)
-    framing = framing_agent.__call__(content)
-    print(framing)
 
     otherness_agent = OthernessAgent(model)
     otherness = otherness_agent.__call__(content)
     print(otherness)
 
+    #Framing agent
+    framing_agent = FramingAgent(model)
+    framing = framing_agent.__call__(content)
+    print(framing)
+
     if( otherness['othernessBoolean'] == "True" or "False"):
         intent_agent = IntentAgent(model)
         intent = intent_agent.__call__(content, otherness['targetGroup'], framing)
         print(intent)
+
+        # if(intent['intent_of_violence']['level'] == "High intent"):
+        #     for post in row['content_list'].tolist():
+        #         otherness = otherness_agent.__call__(post)
+        #         print(otherness)
+
+        #         framing = framing_agent.__call__(post)
+        #         print(framing)
+
+        #         intent = intent_agent.__call__(post, otherness['targetGroup'], framing)
+        #         print(intent)
