@@ -1,5 +1,6 @@
 from controllable_LLMs.agents.framing_agent import FramingAgent
 from controllable_LLMs.agents.target_group_agent import TargetGroupAgent
+from controllable_LLMs.agents.validation_agent import ValidationAgent
 from .agents.example_agent import ExampleAgent
 from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
@@ -60,3 +61,9 @@ for index,row in data_random_3.iterrows():
         intent_agent = IntentAgent(model)
         intent = intent_agent.__call__(content, otherness['targetGroup'], framing)
         print(intent)
+
+    #Validation
+    validation_agent = ValidationAgent(model)
+    output = validation_agent.__call__(content, otherness['othernessBoolean'], otherness['targetGroup'], framing['framingStyle'], framing['framingTool'], intent['intentOfViolence'])
+    print(output)
+
