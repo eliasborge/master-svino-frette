@@ -1,5 +1,7 @@
-/data
 
+
+data/*
+!data/grouped_data_from_stormfront/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
