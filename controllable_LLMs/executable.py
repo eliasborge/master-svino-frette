@@ -70,10 +70,12 @@ model = "hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q6_K_L"
 #         intent = intent_agent.__call__(content, otherness['targetGroup'], framing)
 #         print(intent)
 
+
+#TESTING
 otherness_boolean = "False"
-target_group ="Cows"
+target_group = "Cows"
 framing_style = "Explicit"
-framing_tool = ""
+framing_tool = "Metaphor"
 intent_of_violence = "No Intent"
 content = "Omg no I love it when cows run around on the field"
 
