@@ -21,10 +21,6 @@ print(output)
 # Replace with actual messages from preprocessing script
 
 data_random_3 = data.sample(n=3)
-first_item_content_list_str = eval(data_random_3.iloc[0]['content_list'])
-print(first_item_content_list_str)
-
-
 
 
 for index,row in data_random_3.iterrows():
@@ -34,8 +30,6 @@ for index,row in data_random_3.iterrows():
     topic = row['stormfront_topic']
 
     print(topic)
-    print(len(topic))
-    print(row['posts'])
 
     #Emotion analysis
     #emotion_agent = EmotionAgent(model)
@@ -67,15 +61,15 @@ for index,row in data_random_3.iterrows():
     if( otherness['othernessBoolean'] == "True" or "False"):
         intent_agent = IntentAgent(model)
         intent = intent_agent.__call__(content, otherness['targetGroup'], framing)
-        print(intent)
+        print(intent['intent_of_violence'])
 
-        # if(intent['intent_of_violence']['level'] == "High intent"):
-        #     for post in row['content_list'].tolist():
-        #         otherness = otherness_agent.__call__(post)
-        #         print(otherness)
+        if(intent['intent_of_violence'] == "High intent" or intent['intent_of_violence'] == "High"):
+            for post in content_list:
+                specific_post_otherness = otherness_agent.__call__(post)
+                print(specific_post_otherness)
 
-        #         framing = framing_agent.__call__(post)
-        #         print(framing)
+                specific_post_framing = framing_agent.__call__(post)
+                print(specific_post_framing)
 
-        #         intent = intent_agent.__call__(post, otherness['targetGroup'], framing)
-        #         print(intent)
+                specific_post_intent = intent_agent.__call__(post, specific_post_otherness['targetGroup'], framing2)
+                print(specific_post_intent)
