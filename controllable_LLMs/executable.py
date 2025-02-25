@@ -7,7 +7,7 @@ from .agents.intent_agent import IntentAgent
 
 import pandas as pd
 
-model = "hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:Q6_K_L"
+model = "hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q6_K_L"
 
 data = pd.read_csv("data/grouped_data_from_stormfront/grouped_stormfront_data_2014.csv")
 
@@ -71,5 +71,5 @@ for index,row in data_random_3.iterrows():
                 specific_post_framing = framing_agent.__call__(post)
                 print(specific_post_framing)
 
-                specific_post_intent = intent_agent.__call__(post, specific_post_otherness['targetGroup'], framing2)
+                specific_post_intent = intent_agent.__call__(post, specific_post_otherness['targetGroup'], specific_post_framing)
                 print(specific_post_intent)
