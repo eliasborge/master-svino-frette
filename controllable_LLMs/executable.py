@@ -49,7 +49,7 @@ for index,row in data_random_3.iterrows():
     
     #Framing agent
     framing_agent = FramingAgent(model)
-    framing = framing_agent.__call__(message)
+    framing = framing_agent.__call__(content)
     print(framing)
 
     otherness_agent = OthernessAgent(model)
