@@ -41,11 +41,16 @@ class IntentAgent(Agent):
         """
 
 
-    def prompt(self, content, targetGroup):
-        return f"""The message you are to analyze for intent of violence is as follows: {content}.
-        Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
-        """
-
+    def prompt(self, content, targetGroup, framing):
+        if (framing['framingStyle'] == "Implicit"):
+            return f"""The message you are to analyze for intent of violence is as follows: {content}.
+            Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
+            be aware that the message contains {framing['framingTool']}
+            """
+        else:
+            return f"""The message you are to analyze for intent of violence is as follows: {content}.
+            Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
+            """
     def schema(self):
         class IntentAnalysis(BaseModel):
             intent_of_violence: str
@@ -55,10 +60,10 @@ class IntentAgent(Agent):
 
         return IntentSchema.model_json_schema()
 
-    def __call__(self,content:str,targetGroup:str, output_key: str = "level_of_violence"):
+    def __call__(self,content:str,targetGroup:str, framing:dict, output_key: str = "level_of_violence"):
         output = self.generate(
             system_prompt=self.system(),
-            prompt=self.prompt(content,targetGroup),
+            prompt=self.prompt(content,targetGroup, framing),
             schema=self.schema(),
             model=self.model
         )

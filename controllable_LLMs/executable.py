@@ -46,11 +46,11 @@ for index,row in data_random_3.iterrows():
     # print(otherness)
    
     # if(otherness['othernessBoolean'] == "True"):
-        
+    
     #Framing agent
-    # framing_agent = FramingAgent(model)
-    # framing = framing_agent.__call__(message)
-    # print(framing)
+    framing_agent = FramingAgent(model)
+    framing = framing_agent.__call__(content)
+    print(framing)
 
     otherness_agent = OthernessAgent(model)
     otherness = otherness_agent.__call__(content)
@@ -58,5 +58,5 @@ for index,row in data_random_3.iterrows():
 
     if( otherness['othernessBoolean'] == "True" or "False"):
         intent_agent = IntentAgent(model)
-        intent = intent_agent.__call__(content, otherness['targetGroup'])
+        intent = intent_agent.__call__(content, otherness['targetGroup'], framing)
         print(intent)
