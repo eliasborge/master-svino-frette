@@ -28,15 +28,15 @@ class IntentAgent(Agent):
 
         Example 1:
         Message: "I think old people are so annoying. I wish someone would kill them."
-        Answer:"""+ """ {'intent_of_violence': {'level': 'Moderate intent'}}
+        Answer:"""+ """ {'intent_of_violence': 'Moderate intent'}
 
         Example 2:
         Message: "Going to the circus always makes me happy, there are so many children there."
-        Answer: {'intent_of_violence': {'level': 'No intent'}} 
+        Answer: {'intent_of_violence': 'No intent'}
 
         Example 3:
         Message: "I'm going to get rid of all jews on this planet"
-        Answer: {'intent_of_violence': {'level': 'High intent'}} 
+        Answer: {'intent_of_violence': 'High intent'} 
 
         """
 
@@ -45,7 +45,7 @@ class IntentAgent(Agent):
         if (framing['framingStyle'] == "Implicit"):
             return f"""The message you are to analyze for intent of violence is as follows: {content}.
             Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
-            be aware that the message contains {framing['framingTool']}
+             Be aware the message may contain hidden meanings by the use of {framing['framingTool']}
             """
         else:
             return f"""The message you are to analyze for intent of violence is as follows: {content}.
