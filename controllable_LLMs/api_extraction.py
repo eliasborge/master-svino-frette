@@ -36,7 +36,6 @@ def generate(
     res = response.message.content
     if parse and schema:
         try:
-            print(res)
             res = eval(res)
         except Exception:
             res = None
