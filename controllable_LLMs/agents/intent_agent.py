@@ -50,7 +50,7 @@ class IntentAgent(Agent):
         
 
         class IntentSchema(BaseModel):
-            intent_of_violence: str
+            intent_of_violence: int
 
         return IntentSchema.model_json_schema()
 

@@ -59,7 +59,7 @@ class ValidationAgent(Agent):
 
     def schema(self):
         class ValidationContent(BaseModel):
-            validated_label: str
+            validated_label: int
             validation_status: str
             flagged_issues: List[str]
 
