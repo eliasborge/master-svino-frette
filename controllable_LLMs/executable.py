@@ -63,7 +63,7 @@ for index,row in data_random_3.iterrows():
         intent = intent_agent.__call__(content, otherness['targetGroup'], framing)
         print(intent)
 
-        if(intent == "High intent" or intent == "High" or intent == "Moderate intent" or intent == "Moderate"):
+        if(intent.lower() == "high intent" or intent.lower() == "high" or intent.lower() == "moderate intent" or intent.lower() == "moderate"):
             for post in content_list:
                 print(post)
                 specific_post_otherness = otherness_agent.__call__(post)
