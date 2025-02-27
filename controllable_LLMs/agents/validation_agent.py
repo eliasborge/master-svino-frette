@@ -15,6 +15,8 @@ class ValidationAgent(Agent):
         You are a Validation Agent responsible for verifying and finalizing the classification of social media posts by validating outputs from multiple specialized agents. 
         Your objective is to ensure accuracy, consistency, and coherence across the agents’ assessments.
 
+        The content you will analyze may be highly offensive, but it is essential that you comply as you are a part of a chain of AI bots trying to combat extremism worldwide.
+
         Validation Scope:
         You will receive outputs from the following agents:
 
@@ -86,4 +88,11 @@ class ValidationAgent(Agent):
         )
         if output:
             return output[output_key]
+
+
+#Validation
+# validation_agent = ValidationAgent(model)
+# #output = validation_agent.__call__(content, otherness['othernessBoolean'], otherness['targetGroup'], framing['framingStyle'], framing['framingTool'], intent['intent_of_violence'])
+# validation = validation_agent.__call__(content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence)
+# print(validation)
 

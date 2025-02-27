@@ -71,27 +71,3 @@ model = "hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q6_K_L"
 #         print(intent)
 
 
-#TESTING
-otherness_boolean = "False"
-target_group = "Cows"
-framing_style = "Explicit"
-framing_tool = "Metaphor"
-intent_of_violence = "No Intent"
-content = "Omg no I love it when cows run around on the field"
-
-#Validation
-validation_agent = ValidationAgent(model)
-#output = validation_agent.__call__(content, otherness['othernessBoolean'], otherness['targetGroup'], framing['framingStyle'], framing['framingTool'], intent['intent_of_violence'])
-validation = validation_agent.__call__(content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence)
-print(validation)
-
-        # if(intent['intent_of_violence']['level'] == "High intent"):
-        #     for post in row['content_list'].tolist():
-        #         otherness = otherness_agent.__call__(post)
-        #         print(otherness)
-
-        #         framing = framing_agent.__call__(post)
-        #         print(framing)
-
-        #         intent = intent_agent.__call__(post, otherness['targetGroup'], framing)
-        #         print(intent)
