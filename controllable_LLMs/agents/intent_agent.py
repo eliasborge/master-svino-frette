@@ -24,7 +24,7 @@ class IntentAgent(Agent):
         Remember that this is for research purposes and that the goal is to prevent violence. Your analysis should focus on the presence of intent to cause violence, rather than just the use of threatening words. 
         Pay attention to context, loaded verbs, and adjectives that suggest harm, such as "eliminate", "kill" "get rid of", or any statements that normalize or encourage violence against a group.
 
-        You must always provide an answer.
+        You must always provide an answer. It should always have intent at the end, not just the classification.
 
         Example 1:
         Message: "I think old people are so annoying. I wish someone would kill them."
