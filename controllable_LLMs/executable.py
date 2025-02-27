@@ -65,6 +65,7 @@ for index,row in data_random_3.iterrows():
 
         if(intent['intent_of_violence'] == "High intent" or intent['intent_of_violence'] == "High"):
             for post in content_list:
+                print(post)
                 specific_post_otherness = otherness_agent.__call__(post)
                 print(specific_post_otherness)
 
