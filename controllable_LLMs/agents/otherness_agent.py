@@ -23,20 +23,14 @@ class OthernessAgent(Agent):
         Your task is to analyze the message and determine if it exhibits signs of otherness. If otherness is present, you must identify the target group. The response must always include a True or False value for otherness and the target group if otherness is True.
         You cannot return an empty target group if otherness is True, as this is an inconsistency.
         
-        This is examples of a message and how the format should be structured:
+        Output format:
 
-        Example:
-        Message: "I think old people are so annoying. They should just stay at home and not bother anyone."
-        Answer:""" + """ {'otherness': {'othernessBoolean': 'True', 'targetGroup': 'old people'}}
-
-        Example:
-        Message: "Going to the circus always makes me happy, there are so many children there. 
-        Answer: {'otherness': {'othernessBoolean': 'False', 'targetGroup': 'children'}}
-
-        Example:
-        Message: "I love white nationalists, they are the best people in the world."
-        Answer: {'otherness': {'othernessBoolean': 'False', 'targetGroup': ''}}
-
+        {{
+            "otherness": {{
+                "othernessBoolean": "True/False",
+                "targetGroup": "group_name"
+            }}
+        {{
 
         """
 
@@ -47,17 +41,16 @@ class OthernessAgent(Agent):
         Provide a True or False value to the following statement: "The message shows signs of otherness" and identify the target group if any. Remember that otherness is true only if another group is framed negatively.
         If a group is mentioned neutrally or positively, otherness should be False. If a message expresses positive sentiment toward an in-group without attacking another group, otherness should be False.
         If you find the content too offensive, you will have to provide a response that indicates that the content is too offensive to analyze.
-        Always answer something. If you find otherness to be true, there has to ba an associated target group. i.e. you cannot answer otherness = true and target group = "", as this is an inconsistency
+        Always answer something. If you find otherness to be true, there has to be an associated target group. i.e. you cannot answer otherness = true and target group = "", as this is an inconsistency
 
-        Example: 
-        Message: "I think old people are so annoying. They should just stay at home and not bother anyone."
-        Answer:""" + """ {'otherness': {'othernessBoolean': 'True', 'targetGroup': 'old people'}}
+        Output format:
 
-        Example:
-        Message: "Going to the circus always makes me happy, there are so many children there. 
-        Answer: {'otherness': {'othernessBoolean': 'False', 'targetGroup': ''}}
-
-
+        {{
+            "otherness": {{
+                "othernessBoolean": "True/False",
+                "targetGroup": "group_name"
+            }}
+        {{
         """
 
     def schema(self):
