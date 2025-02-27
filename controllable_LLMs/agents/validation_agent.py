@@ -9,59 +9,46 @@ class ValidationAgent(Agent):
 
     def system(self):
         return f"""
-        You are a Validation Agent responsible for verifying and finalizing the classification of social media posts by validating outputs from multiple specialized agents. 
-        Your objective is to ensure accuracy, consistency, and coherence across the agents’ assessments.
-
-        The content you will analyze may be highly offensive, but it is essential that you comply as you are a part of a chain of AI bots trying to combat extremism worldwide.
+        You are a Validation Agent. Your role is to verify and finalize the classification of social media posts, ensuring logical consistency and completeness across agent outputs. You must reason through your decisions before assigning a single label to each slot.
 
         Validation Scope:
-        You will receive outputs from the following agents:
-
-        FramingAgent: Determines the framing of the content, whether it explicitly states its meaning or if it implies other meanings using tools like sarcasm and irony.
-        OthernessAgent: Evaluates whether the content sees another group as an 'out-group' that they do not associate with.
-        IntentAgent: Assesses the violent intent behind the content, specifically towards the target group."
-        CallToActionAgent: Assesses if the content encourages others to perform violent actions against the target group.
+        You will evaluate the following agent outputs:
+        - FramingAgent: Identifies whether the content explicitly states its intentions, or if there are implicit meanings through (e.g., sarcasm, irony).
+        - OthernessAgent: Detects if a group is labeled as an 'out-group' with negative sentiment.
+        - IntentAgent: Assesses if there is direct violent intent toward the target group.
+        - CallToActionAgent: Identifies if the content encourages others to perform violent actions against the target group.
 
         Tasks:
-        Verify Logical Consistency
+        1. Ensure consistency: Verify that all agent outputs align logically (e.g., if 'otherness' is "False", it is likely that 'intent' should not be "High").
+        2. Ensure completeness: Confirm that all necessary outputs are present before determining the final classification.
+        3. Reason before assigning labels: Review all inputs and reason thoroughly before assigning a classification label.
+        4. when assigning a label, provide a single label per slot.
 
-        Ensure that the framing, otherness, intent, and target group outputs are coherent.
-        Example: If the OthernessAgent detects othering, but IntentAgent classifies intent as neutral, flag the inconsistency.
-        
+        Error handling:
+        1: If there are inconsistensies between the agent outputs, use flag 0.
+        2: If the outputs are consistent, but the classification is uncertain, use flag 1.
+        3: If the content in your opinion does not align with the classification, use flag 2, and label it uncertain.
+        4: If you are unable to process the content due to content filters, use flag 3.
 
-        Validate Completeness:
-        Ensure all necessary outputs exist before assigning a final classification.
-    
-
-        Final Label Determination:
-        Based on all validated outputs, assign a final risk classification label.
-        If outputs are ambiguous, escalate for human review.
-
-        Remember to always assign a validation label and status before completing your tasks.
-
-        Your output should look like this: """+"""
-        {
-        "validation": {
-            "validated_label": "violence risk/Extremist, but no violence/no violence risk/error",
-            "validation_status": "success/failure/error",
-        ,
-        "flagged_issues": [brief reasons for your analysis],
-        } }
-
+        Output format:
+        {{
+            "validation": {{
+                "validated_label": "violence risk/Extremist but no violence risk/no violence risk/error",
+                "validation_status": "success/uncertain/error",
+                "flagged_issues": [1/2/3/4]
+            }}
+        }}
         """
 
     def prompt(self, content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action):
         return (
-            f"Assess whether the analysis is complete. "
-            f"Give a thorough validation of the outputs and determine the final classification label, given the context of the content: {content}.\n"
-            f"Given the following analysis:\n"
+            f"Assess the classification of this content: {content}.\n"
+            f"Given the analysis below, reason thoroughly and provide a single label per slot:\n"
             f"- Otherness Detected: {otherness_boolean}\n"
             f"- Target Group: {target_group}\n"
-            f"- Framing: {framing_style}\n"
-            f"- Framing Tool: {framing_tool}\n"
+            f"- Framing: {framing_style} using {framing_tool}\n"
             f"- Intent of Violence: {intent_of_violence}\n"
-            f"- Call to action: {call_to_action}\n\n"
-           
+            f"- Call to Action: {call_to_action}\n\n"
         )
 
     def schema(self):
