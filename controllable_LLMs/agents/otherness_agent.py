@@ -23,7 +23,7 @@ class OthernessAgent(Agent):
         Give a thorough analysis on the message and determine if it shows signs of otherness.
         Provide a True or False value to the following statement: "The message shows signs of otherness" and identify the target group if any.
         If you find the content too offensive, you will have to provide a response that indicates that the content is too offensive to analyze.
-        Always answer something. Either you give the answer or you indicate that you are unsure.
+        Always answer something. If you find otherness to be true, there has to ba an associated target group. i.e. you cannot answer otherness = true and target group = "", as this is an inconsistency
 
         Example: 
         Message: "I think old people are so annoying. They should just stay at home and not bother anyone."
