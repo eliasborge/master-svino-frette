@@ -16,6 +16,7 @@ class OthernessAgent(Agent):
         Your specific task is to process a message and determine if the message shows signs of "otherness". Otherness is defined as the concept of an us-versus-them mentality, where the "other" is seen as different
         and inferior. This can include any minority, demographic, or other identifiable group.
         You will analyze the message and determine if it shows signs of otherness and give a true or false value along with the target group identified.
+        Always answer something. If you find otherness to be true, there has to ba an associated target group. i.e. you cannot answer otherness = true and target group = "", as this is an inconsistency
         """
 
     def prompt(self, content):
