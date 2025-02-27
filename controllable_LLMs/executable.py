@@ -30,7 +30,7 @@ for index,row in data_random_3.iterrows():
     print("------------------------------")
     print("topic: \n", topic)
     print("------------------------------")
-    print("number of posts: ",row['number_of_posts'])
+    print("number of posts: ",row['num_posts'])
     print("Size: ",row['content_length'])
     print("------------------------------")
     
