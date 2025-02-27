@@ -44,7 +44,7 @@ class ValidationAgent(Agent):
         Your output should look like this: """+"""
         {
         "validation": {
-            "validated_label": "violence risk/no violence risk/error",
+            "validated_label": "violence risk/Extremist, but no violence/no violence risk/error",
             "validation_status": "success/failure/error",
         ,
         "flagged_issues": [brief reasons for your analysis],
