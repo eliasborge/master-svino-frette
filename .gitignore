@@ -1,9 +1,11 @@
-/data
 
 install-ollama.sh
 test-ollama.py
 test.py
 
+
+data/*
+!data/grouped_data_from_stormfront/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

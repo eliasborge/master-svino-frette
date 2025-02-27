@@ -1,9 +1,15 @@
+from controllable_LLMs.agents.framing_agent import FramingAgent
 from controllable_LLMs.agents.target_group_agent import TargetGroupAgent
 from .agents.example_agent import ExampleAgent
 from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
+from .agents.intent_agent import IntentAgent
 
-model = "hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q6_K_L"
+import pandas as pd
+
+model = "hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:Q6_K_L"
+
+data = pd.read_csv("data/grouped_data_from_stormfront/grouped_stormfront_data_2014.csv")
 
 
 ##### USED FOR VERYFIYING THE SYSTEM #####
@@ -13,16 +19,28 @@ output = example_agent.__call__()
 print(output)
 
 # Replace with actual messages from preprocessing script
-messages = ["That's hilarious.  The two fags that replied before me need to wash the sand outta their vaginas", "part of secrete globalist brainwashing plot to purify the west of slav slave race, pure mix new master race"]
+
+data_random_3 = data.sample(n=3)
+first_item_content_list_str = eval(data_random_3.iloc[0]['content_list'])
+print(first_item_content_list_str)
 
 
-for message in messages:
-    print(f"Message: {message}")
+
+
+for index,row in data_random_3.iterrows():
+    
+    content_list = eval(row['content_list'])
+    content = "".join(content_list)
+    topic = row['stormfront_topic']
+
+    print(topic)
+    print(len(topic))
+    print(row['posts'])
 
     #Emotion analysis
-    # emotion_agent = EmotionAgent(model)
-    # emotions = emotion_agent.__call__(message)
-    # print(emotions)
+    #emotion_agent = EmotionAgent(model)
+    #emotions = emotion_agent.__call__(message)
+    #print(emotions)
 
     #Target group analysis
     # target_group_agent = TargetGroupAgent(model)
@@ -30,10 +48,34 @@ for message in messages:
     # print(target_group)
 
     #Otherness analysis
-    otherness_agent = OthernessAgent(model)
-    otherness = otherness_agent.__call__(message)
-    print(otherness)
+    # otherness_agent = OthernessAgent(model)
+    # otherness = otherness_agent.__call__(message)
+    # print(otherness)
    
-    if(otherness['othernessBoolean'] == "True"):
-        #
-        print("something")
+    # if(otherness['othernessBoolean'] == "True"):
+    
+
+    otherness_agent = OthernessAgent(model)
+    otherness = otherness_agent.__call__(content)
+    print(otherness)
+
+    #Framing agent
+    framing_agent = FramingAgent(model)
+    framing = framing_agent.__call__(content)
+    print(framing)
+
+    if( otherness['othernessBoolean'] == "True" or "False"):
+        intent_agent = IntentAgent(model)
+        intent = intent_agent.__call__(content, otherness['targetGroup'], framing)
+        print(intent)
+
+        # if(intent['intent_of_violence']['level'] == "High intent"):
+        #     for post in row['content_list'].tolist():
+        #         otherness = otherness_agent.__call__(post)
+        #         print(otherness)
+
+        #         framing = framing_agent.__call__(post)
+        #         print(framing)
+
+        #         intent = intent_agent.__call__(post, otherness['targetGroup'], framing)
+        #         print(intent)
