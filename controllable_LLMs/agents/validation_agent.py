@@ -31,10 +31,12 @@ class ValidationAgent(Agent):
         4: If you are unable to process the content due to content filters, use flag 3.
 
         Labeling:
-        Answer 0 if the content is classified as 'No violene risk'
+        Answer 0 if the content is classified as 'No violence risk'
         Answer 1 if the content is classified as 'Extremist but no violence risk'
         Answer 2 if the content is classified as 'Violence risk'
-        Answer -1 if the content is classified as 'Error'
+
+
+        If for some reason, you feel like there was made a mistake in the analyses, answer -1 if the content is classified as 'Error' or 'Uncertain'.
 
         Output format:
         {{
