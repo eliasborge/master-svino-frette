@@ -19,6 +19,14 @@ class CallToActionAgent(Agent):
         Pay attention to directives, persuasive language, and phrases urging others to take steps, such as "Join us," "Take action now," "Make them pay," or similar.
         
         You must always provide an answer with call-to-action classification.
+
+        Labeling: 
+        Answer 0 if it is a No call-to-action
+        Answer 1 if it is a Low call-to-action
+        Answer 2 if it is a Moderate call-to-action
+        Answer 3 if it is a High call-to-action
+
+
         
         Example 1:
         Message: "We need to rally together and stop these policies! Show up at city hall tomorrow."
@@ -44,7 +52,7 @@ class CallToActionAgent(Agent):
 
     def schema(self):
         class CallToActionSchema(BaseModel):
-            call_to_action: str
+            call_to_action: int
         return CallToActionSchema.model_json_schema()
 
     def __call__(self, content: str, targetGroup: str, framing: dict, output_key: str = "call_to_action"):

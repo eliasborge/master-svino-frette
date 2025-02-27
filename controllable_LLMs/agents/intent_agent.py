@@ -26,6 +26,12 @@ class IntentAgent(Agent):
 
         You must always provide an answer. It should always have intent at the end, not just the classification.
 
+        Labeling:
+        Answer 0 if it is a No intent
+        Answer 1 if it is a Low intent
+        Answer 2 if it is a Moderate intent
+        Answer 3 if it is a High intent
+
         Example 1:
         Message: "I think old people are so annoying. I wish someone would kill them."
         Answer:"""+ """ {'intent_of_violence': 'Moderate intent'}
