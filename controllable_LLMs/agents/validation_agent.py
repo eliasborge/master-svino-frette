@@ -4,11 +4,8 @@ from .agent import Agent
 
 
 class ValidationAgent(Agent):
-    def __init__(
-        self, model, 
-    ):
+    def __init__(self, model):
         super().__init__(model)
-       
 
     def system(self):
         return f"""
@@ -23,7 +20,8 @@ class ValidationAgent(Agent):
         FramingAgent: Determines the framing of the content, whether it explicitly states its meaning or if it implies other meanings using tools like sarcasm and irony.
         OthernessAgent: Evaluates whether the content sees another group as an 'out-group' that they do not associate with.
         IntentAgent: Assesses the violent intent behind the content, specifically towards the target group."
-        
+        CallToActionAgent: Assesses if the content encourages others to perform violent actions against the target group.
+
         Tasks:
         Verify Logical Consistency
 
@@ -52,24 +50,28 @@ class ValidationAgent(Agent):
 
         """
 
-    def prompt(self,content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence):
+    def prompt(self, content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action):
         return (
-        f"Assess whether the analysis is complete. "
-        f"Give a thorough validation of the outputs and determine the final classification label, given the context of the content: {content}.\n"
-        f"Given the following analysis:\n"
-        f"- Otherness Detected: {otherness_boolean}\n"
-        f"- Target Group: {target_group}\n"
-        f"- Framing: {framing_style}\n"
-        f"- Framing Tool: {framing_tool}\n"
-        f"- Intent of Violence: {intent_of_violence}\n\n"
-        
-    )
+            f"Assess whether the analysis is complete. "
+            f"Give a thorough validation of the outputs and determine the final classification label, given the context of the content: {content}.\n"
+            f"Given the following analysis:\n"
+            f"- Otherness Detected: {otherness_boolean}\n"
+            f"- Target Group: {target_group}\n"
+            f"- Framing: {framing_style}\n"
+            f"- Framing Tool: {framing_tool}\n"
+            f"- Intent of Violence: {intent_of_violence}\n"
+            f"- Call to action: {call_to_action}\n\n"
+           
+        )
 
     def schema(self):
-        
-
         class ValidationContent(BaseModel):
             validated_label: str
+            validation_status: str
+            flagged_issues: List[str]
+
+        class ValidationSchema(BaseModel):
+            validation: ValidationContent
             validation_status: str
             flagged_issues: List[str]
             
@@ -79,10 +81,10 @@ class ValidationAgent(Agent):
 
         return ValidationSchema.model_json_schema()
 
-    def __call__(self,content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, output_key: str = "validation"):
+    def __call__(self,content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, output_key: str = "validation"):
         output = self.generate(
             system_prompt=self.system(),
-            prompt=self.prompt(content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence),
+            prompt=self.prompt(content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action),
             schema=self.schema(),
             model=self.model
         )
