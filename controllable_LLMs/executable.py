@@ -6,6 +6,7 @@ from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
 from .agents.intent_agent import IntentAgent
 from .agents.validation_agent import ValidationAgent
+from json import loads
 
 import pandas as pd
 
@@ -23,8 +24,8 @@ call_to_action_agent = CallToActionAgent(model)
 
 for index,row in data_random_3.iterrows():
     
-    content_list = eval(row['content_list'])
-    content = "".join(content_list)
+    content = loads(row['content_list'])
+    # content = "".join(content_list)
     topic = row['stormfront_topic']
     print("------------------------------")
     print("topic: \n", topic)
@@ -48,19 +49,25 @@ for index,row in data_random_3.iterrows():
     validation = validation_agent.__call__(content, otherness_boolean = otherness['othernessBoolean'], target_group = otherness['targetGroup'], framing_style = framing['framingStyle'], framing_tool = framing['framingTool'], intent_of_violence=intent, call_to_action=call_to_action)
     print(validation)
 
-#     if(intent.lower() == "high intent" or intent.lower() == "high" or intent.lower() == "moderate intent" or intent.lower() == "moderate"):
-#         print(" ------ ENTER THE THREAD ------")
-#         for post in content_list:
-#             print(" ------ NEW POST ------")
-#             print("\n" +post)
-#             specific_post_otherness = otherness_agent.__call__(post)
-#             print(specific_post_otherness)
+    if(intent.lower() == "high intent" or intent.lower() == "high" or intent.lower() == "moderate intent" or intent.lower() == "moderate"):
+        print(" ------ ENTER THE THREAD ------")
+        for post in content:
+            print(" ------ NEW POST ------")
+            print("\n" +content[post])
+            specific_post_otherness = otherness_agent.__call__(content[post]['content'])
+            print(specific_post_otherness)
 
-#             specific_post_framing = framing_agent.__call__(post)
-#             print(specific_post_framing)
+            specific_post_framing = framing_agent.__call__(content[post]['content'])
+            print(specific_post_framing)
 
-#             specific_post_intent = intent_agent.__call__(post, specific_post_otherness['targetGroup'], specific_post_framing)
-#             print(specific_post_intent)
+            specific_post_intent = intent_agent.__call__(content[post]['content'], specific_post_otherness['targetGroup'], specific_post_framing)
+            print(specific_post_intent)
+
+            specific_post_call_to_action = call_to_action_agent.__call__(content[post]['content'], otherness['targetGroup'], framing)
+            print(specific_post_call_to_action)
+
+            validation = validation_agent.__call__(content[post]['content'], otherness_boolean = specific_post_otherness['othernessBoolean'], target_group = specific_post_otherness['targetGroup'], framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent, call_to_action=specific_post_call_to_action)
+            print(validation)
 
 
 
