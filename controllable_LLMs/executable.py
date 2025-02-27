@@ -23,7 +23,7 @@ validation_agent = ValidationAgent(model)
 call_to_action_agent = CallToActionAgent(model)
 
 for index,row in data_random_3.iterrows():
-    
+    print(row)
     content = loads(row['content_user_list'])
     # content = "".join(content_list)
     topic = row['stormfront_topic']
