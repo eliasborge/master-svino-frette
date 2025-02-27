@@ -23,12 +23,16 @@ validation_agent = ValidationAgent(model)
 call_to_action_agent = CallToActionAgent(model)
 
 for index,row in data_random_3.iterrows():
-    print(row)
+
     content = loads(row['content_user_list'])
     # content = "".join(content_list)
     topic = row['stormfront_topic']
     print("------------------------------")
     print("topic: \n", topic)
+    print("------------------------------")
+    print("number of posts: ",row['number_of_posts'])
+    print("Size: ",row['content_length'])
+    print("------------------------------")
     
     ### CHECKING FOR SIGNS OF 'OTHERNESS' ###
     otherness = otherness_agent.__call__(content)
@@ -53,7 +57,7 @@ for index,row in data_random_3.iterrows():
         print(" ------ ENTER THE THREAD ------")
         for post in content:
             print(" ------ NEW POST ------")
-            print("\n" +content[post])
+            print("\n" ,content[post])
             specific_post_otherness = otherness_agent.__call__(content[post]['content'])
             print(specific_post_otherness)
 
