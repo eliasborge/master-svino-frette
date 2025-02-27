@@ -2,6 +2,7 @@
 from ollama import ChatResponse, chat
 from pydantic.types import JsonSchemaValue
 from typing import Optional
+from json import loads
 
 model = "hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:Q6_K_L"
 
@@ -38,7 +39,7 @@ def generate(
         try:
             print(res)
             print("\n --------------------------------")
-            res = eval(res)
+            res = loads(res)
         except Exception:
             res = None
     return res
