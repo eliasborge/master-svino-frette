@@ -32,17 +32,6 @@ class IntentAgent(Agent):
         Answer 2 if it is a Moderate intent
         Answer 3 if it is a High intent
 
-        Example 1:
-        Message: "I think old people are so annoying. I wish someone would kill them."
-        Answer:"""+ """ {'intent_of_violence': 'Moderate intent'}
-
-        Example 2:
-        Message: "Going to the circus always makes me happy, there are so many children there."
-        Answer: {'intent_of_violence': 'No intent'}
-
-        Example 3:
-        Message: "I'm going to get rid of all jews on this planet"
-        Answer: {'intent_of_violence': 'High intent'} 
 
         """
 

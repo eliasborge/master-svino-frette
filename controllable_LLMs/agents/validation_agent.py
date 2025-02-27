@@ -39,7 +39,7 @@ class ValidationAgent(Agent):
         Output format:
         {{
             "validation": {{
-                "validated_label": "violence risk/Extremist but no violence risk/no violence risk/error",
+                "validated_label": "0/1/2/-1",
                 "validation_status": "success/uncertain/error",
                 "flagged_issues": [1/2/3/4]
             }}
