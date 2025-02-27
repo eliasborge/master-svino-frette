@@ -52,15 +52,14 @@ class IntentAgent(Agent):
             Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
             """
     def schema(self):
-        class IntentAnalysis(BaseModel):
-            intent_of_violence: str
+        
 
         class IntentSchema(BaseModel):
-            level_of_violence: IntentAnalysis
+            intent_of_violence: str
 
         return IntentSchema.model_json_schema()
 
-    def __call__(self,content:str,targetGroup:str, framing:dict, output_key: str = "level_of_violence"):
+    def __call__(self,content:str,targetGroup:str, framing:dict, output_key: str = "intent_of_violence"):
         output = self.generate(
             system_prompt=self.system(),
             prompt=self.prompt(content,targetGroup, framing),

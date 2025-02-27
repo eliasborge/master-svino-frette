@@ -61,9 +61,9 @@ for index,row in data_random_3.iterrows():
     if( otherness['othernessBoolean'] == "True" or "False"):
         intent_agent = IntentAgent(model)
         intent = intent_agent.__call__(content, otherness['targetGroup'], framing)
-        print(intent['intent_of_violence'])
+        print(intent)
 
-        if(intent['intent_of_violence'] == "High intent" or intent['intent_of_violence'] == "High"):
+        if(intent == "High intent" or intent == "High"):
             for post in content_list:
                 specific_post_otherness = otherness_agent.__call__(post)
                 print(specific_post_otherness)
