@@ -1,25 +1,16 @@
 from controllable_LLMs.agents.framing_agent import FramingAgent
 from controllable_LLMs.agents.target_group_agent import TargetGroupAgent
-from controllable_LLMs.agents.validation_agent import ValidationAgent
 from .agents.example_agent import ExampleAgent
 from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
 from .agents.intent_agent import IntentAgent
+from .agents.validation_agent import ValidationAgent
 
 import pandas as pd
 
 model = "mistral-small"
 
 data = pd.read_csv("data/grouped_data_from_stormfront/grouped_stormfront_data_2014.csv")
-
-
-##### USED FOR VERYFIYING THE SYSTEM #####
-example_agent = ExampleAgent(model)
-
-output = example_agent.__call__()
-print(output)
-
-# Replace with actual messages from preprocessing script
 
 data_random_3 = data.sample(n=3)
 
@@ -65,16 +56,21 @@ for index,row in data_random_3.iterrows():
         intent = intent_agent.__call__(content, otherness['targetGroup'], framing)
         print(intent)
 
-        if(intent.lower() == "high intent" or intent.lower() == "high" or intent.lower() == "moderate intent" or intent.lower() == "moderate"):
-            print(" ------ ENTER THE THREAD ------")
-            for post in content_list:
-                print(" ------ NEW POST ------")
-                print("\n" +post)
-                specific_post_otherness = otherness_agent.__call__(post)
-                print(specific_post_otherness)
+        validation_agent = ValidationAgent(model)
+        #output = validation_agent.__call__(content, otherness['othernessBoolean'], otherness['targetGroup'], framing['framingStyle'], framing['framingTool'], intent['intent_of_violence'])
+        validation = validation_agent.__call__(content, otherness_boolean = otherness['othernessBoolean'], target_group = otherness['targetGroup'], framing_style = framing['framingStyle'], framing_tool = framing['framingTool'], intent_of_violence=intent)
+        print(validation),
 
-                specific_post_framing = framing_agent.__call__(post)
-                print(specific_post_framing)
+    #     if(intent.lower() == "high intent" or intent.lower() == "high" or intent.lower() == "moderate intent" or intent.lower() == "moderate"):
+    #         print(" ------ ENTER THE THREAD ------")
+    #         for post in content_list:
+    #             print(" ------ NEW POST ------")
+    #             print("\n" +post)
+    #             specific_post_otherness = otherness_agent.__call__(post)
+    #             print(specific_post_otherness)
 
-                specific_post_intent = intent_agent.__call__(post, specific_post_otherness['targetGroup'], specific_post_framing)
-                print(specific_post_intent)
+    #             specific_post_framing = framing_agent.__call__(post)
+    #             print(specific_post_framing)
+
+    #             specific_post_intent = intent_agent.__call__(post, specific_post_otherness['targetGroup'], specific_post_framing)
+    #             print(specific_post_intent)

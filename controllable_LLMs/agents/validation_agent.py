@@ -90,9 +90,3 @@ class ValidationAgent(Agent):
             return output[output_key]
 
 
-#Validation
-# validation_agent = ValidationAgent(model)
-# #output = validation_agent.__call__(content, otherness['othernessBoolean'], otherness['targetGroup'], framing['framingStyle'], framing['framingTool'], intent['intent_of_violence'])
-# validation = validation_agent.__call__(content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence)
-# print(validation)
-
