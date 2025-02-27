@@ -85,10 +85,19 @@ for index,row in data_random_3.iterrows():
         print(specific_post_validation)
 
         if(topicWasAnalysed):
-            collected_data = collected_data.append({'document_id': post_docid,'num_posts_in_same_topic': num_posts,'topic_length': topic_length,'topic_violence_label': validation['validated_label'],'violence_label': specific_post_validation['validated_label'],'intent_label': intent,'call_to_action': call_to_action,'flagged_issues': specific_post_validation['flagged_issues']}, ignore_index=True)
+            new_row = {'document_id': post_docid, 'num_posts_in_same_topic': num_posts, 
+               'topic_length': topic_length, 'topic_violence_label': validation['validated_label'], 
+               'violence_label': specific_post_validation['validated_label'], 'intent_label': intent, 
+               'call_to_action': call_to_action, 'flagged_issues': specific_post_validation['flagged_issues']}
         else:
-            collected_data = collected_data.append({'document_id': post_docid,'num_posts_in_same_topic': num_posts,'topic_length': topic_length,'topic_violence_label': None,'violence_label': specific_post_validation['validated_label'],'intent_label': intent,'call_to_action': call_to_action,'flagged_issues': specific_post_validation['flagged_issues']}, ignore_index=True)
+            new_row = {'document_id': post_docid, 'num_posts_in_same_topic': num_posts, 
+               'topic_length': topic_length, 'topic_violence_label': None, 
+               'violence_label': specific_post_validation['validated_label'], 'intent_label': intent, 
+               'call_to_action': call_to_action, 'flagged_issues': specific_post_validation['flagged_issues']}
 
+        # Convert new_row to a DataFrame and concatenate with the existing DataFrame
+        new_row_df = pd.DataFrame([new_row])
+        collected_data = pd.concat([collected_data, new_row_df], ignore_index=True)
 
         
 ### COLLECTION OF DATA ###
