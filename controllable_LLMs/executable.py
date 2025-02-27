@@ -12,7 +12,7 @@ import pandas as pd
 
 model = "mistral-small"
 
-data = pd.read_csv("data/grouped_data_from_stormfront/grouped_stormfront_data_2014_2.csv")
+data = pd.read_csv("data/grouped_data_from_stormfront/grouped_stormfront_data_2014_3.csv")
 
 data_random_3 = data.sample(n=3)
 
