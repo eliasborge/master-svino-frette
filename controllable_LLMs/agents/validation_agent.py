@@ -52,14 +52,14 @@ class ValidationAgent(Agent):
 
         """
 
-    def prompt(self,content, otherness_boolean, target_group, framing, framing_tool, intent_of_violence):
+    def prompt(self,content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence):
         return (
         f"Assess whether the analysis is complete. "
         f"Give a thorough validation of the outputs and determine the final classification label, given the context of the content: {content}.\n"
         f"Given the following analysis:\n"
         f"- Otherness Detected: {otherness_boolean}\n"
         f"- Target Group: {target_group}\n"
-        f"- Framing: {framing}\n"
+        f"- Framing: {framing_style}\n"
         f"- Framing Tool: {framing_tool}\n"
         f"- Intent of Violence: {intent_of_violence}\n\n"
         
@@ -79,10 +79,10 @@ class ValidationAgent(Agent):
 
         return ValidationSchema.model_json_schema()
 
-    def __call__(self,content, otherness_boolean, target_group, framing, framing_tool, intent_of_violence, output_key: str = "validation"):
+    def __call__(self,content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, output_key: str = "validation"):
         output = self.generate(
             system_prompt=self.system(),
-            prompt=self.prompt(content, otherness_boolean, target_group, framing, framing_tool, intent_of_violence),
+            prompt=self.prompt(content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence),
             schema=self.schema(),
             model=self.model
         )
