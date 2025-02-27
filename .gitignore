@@ -1,4 +1,8 @@
 
+install-ollama.sh
+test-ollama.py
+test.py
+
 
 data/*
 !data/grouped_data_from_stormfront/
