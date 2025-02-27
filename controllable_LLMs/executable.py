@@ -1,5 +1,6 @@
 from controllable_LLMs.agents.framing_agent import FramingAgent
 from controllable_LLMs.agents.target_group_agent import TargetGroupAgent
+from controllable_LLMs.agents.validation_agent import ValidationAgent
 from .agents.example_agent import ExampleAgent
 from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
