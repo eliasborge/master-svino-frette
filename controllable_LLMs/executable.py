@@ -66,22 +66,22 @@ for index,row in data_random_3.iterrows():
 
     
     print(" ------ ENTER THE THREAD ------")
-    for post_docid in content:
+    for post_docid in content_with_ids:
         print(" ------ NEW POST ------")
-        print("\n" ,content[post_docid])
-        specific_post_otherness = otherness_agent.__call__(content[post_docid]['content'])
+        print("\n" ,content_with_ids[post_docid])
+        specific_post_otherness = otherness_agent.__call__(content_with_ids[post_docid]['content'])
         print(specific_post_otherness)
 
-        specific_post_framing = framing_agent.__call__(content[post_docid]['content'])
+        specific_post_framing = framing_agent.__call__(content_with_ids[post_docid]['content'])
         print(specific_post_framing)
 
-        specific_post_intent = intent_agent.__call__(content[post_docid]['content'], specific_post_otherness['targetGroup'], specific_post_framing)
+        specific_post_intent = intent_agent.__call__(content_with_ids[post_docid]['content'], specific_post_otherness['targetGroup'], specific_post_framing)
         print(specific_post_intent)
 
-        specific_post_call_to_action = call_to_action_agent.__call__(content[post_docid]['content'], otherness['targetGroup'], framing)
+        specific_post_call_to_action = call_to_action_agent.__call__(content_with_ids[post_docid]['content'], otherness['targetGroup'], framing)
         print(specific_post_call_to_action)
 
-        specific_post_validation = validation_agent.__call__(content[post_docid]['content'], otherness_boolean = specific_post_otherness['othernessBoolean'], target_group = specific_post_otherness['targetGroup'], framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent, call_to_action=specific_post_call_to_action)
+        specific_post_validation = validation_agent.__call__(content_with_ids[post_docid]['content'], otherness_boolean = specific_post_otherness['othernessBoolean'], target_group = specific_post_otherness['targetGroup'], framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent, call_to_action=specific_post_call_to_action)
         print(specific_post_validation)
 
         if(topicWasAnalysed):
