@@ -30,6 +30,7 @@ class FramingAgent(Agent):
         Example:
         Message: "I love spending my weekends doing absolutely nothing."
         Answer: {'framing': {'framingStyle': 'Explicit', 'framingTool': ''}}"""
+
         )
 
     def prompt(self,content):

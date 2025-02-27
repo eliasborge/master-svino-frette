@@ -28,8 +28,9 @@ for index,row in data_random_3.iterrows():
     content_list = eval(row['content_list'])
     content = "".join(content_list)
     topic = row['stormfront_topic']
-
-    print(topic)
+    print("------------------------------")
+    print("topic: \n", topic)
+   
 
     #Emotion analysis
     #emotion_agent = EmotionAgent(model)
@@ -64,8 +65,10 @@ for index,row in data_random_3.iterrows():
         print(intent)
 
         if(intent.lower() == "high intent" or intent.lower() == "high" or intent.lower() == "moderate intent" or intent.lower() == "moderate"):
+            print(" ------ ENTER THE THREAD ------")
             for post in content_list:
-                print(post)
+                print(" ------ NEW POST ------")
+                print("\n" +post)
                 specific_post_otherness = otherness_agent.__call__(post)
                 print(specific_post_otherness)
 
