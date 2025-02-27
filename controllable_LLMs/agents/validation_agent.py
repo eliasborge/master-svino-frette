@@ -36,12 +36,12 @@ class ValidationAgent(Agent):
         Answer 2 if the content is classified as 'Violence risk'
 
 
-        If for some reason, you feel like there was made a mistake in the analyses, answer -1 if the content is classified as 'Error' or 'Uncertain'.
+
 
         Output format:
         {{
             "validation": {{
-                "validated_label": "0/1/2/-1",
+                "validated_label": "0/1/2",
                 "validation_status": "success/uncertain/error",
                 "flagged_issues": [1/2/3/4]
             }}
