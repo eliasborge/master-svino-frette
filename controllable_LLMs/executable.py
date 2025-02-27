@@ -7,7 +7,7 @@ from .agents.intent_agent import IntentAgent
 
 import pandas as pd
 
-model = "hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q6_K_L"
+model = "mistral-small"
 
 data = pd.read_csv("data/grouped_data_from_stormfront/grouped_stormfront_data_2014.csv")
 
