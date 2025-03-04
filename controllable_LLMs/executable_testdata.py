@@ -13,8 +13,8 @@ import pandas as pd
 
 model = "mistral-small"
 
-df = pd.read_csv("data\\testdata\processed_VideoCommentsThreatCorpus.csv")
-grouped_df = pd.read_csv("data\\testdata\grouped_processed_VideoCommentsThreatCorpus.csv")
+df = pd.read_csv("data\testdata\processed_VideoCommentsThreatCorpus.csv")
+grouped_df = pd.read_csv("data\testdata\grouped_processed_VideoCommentsThreatCorpus.csv")
 
 
 ### Due to the size of the topic threads, they haev been split into chunks ###
