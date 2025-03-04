@@ -68,7 +68,7 @@ for index,row in topic_data.iterrows():
 
 
     print(" ------ ENTER THE THREAD ------")
-    for i,post in df.iterrows():
+    for index,post in df[df['id'].isin(list_of_ids)].iterrows():
         if(post['id'] in list_of_ids):
             print(" ------ NEW POST ------")
             specific_post_content = post['content']
