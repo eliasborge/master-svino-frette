@@ -36,7 +36,7 @@ for index,row in topic_data.iterrows():
 
     content_with_ids = df
     content_list = row['content']
-    content = "\nComment:\n".join(content_list)
+    content = "\n\n".join(content_list)
     num_posts = row['num_posts']
     topic_length = row['content_length']
     list_of_ids = row['id'].split(",")
