@@ -31,6 +31,7 @@ intent_agent = IntentAgent(model)
 validation_agent = ValidationAgent(model)
 call_to_action_agent = CallToActionAgent(model)
 
+
 for index,row in topic_data.iterrows():
 
 
@@ -39,7 +40,9 @@ for index,row in topic_data.iterrows():
     content = "\n\n".join(content_list)
     num_posts = row['num_posts']
     topic_length = row['content_length']
-    list_of_ids:list = row['id'].split(",")
+    list_of_ids:list = row['id'].split(", ")
+
+    print(list_of_ids)
 
     ### AVOID DOUBLE ANALYSIS IF ONLY ONE POST IN TOPIC ###
     topicWasAnalysed = False
