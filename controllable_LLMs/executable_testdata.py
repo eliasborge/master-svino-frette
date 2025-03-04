@@ -39,7 +39,7 @@ for index,row in topic_data.iterrows():
     content = "\n\n".join(content_list)
     num_posts = row['num_posts']
     topic_length = row['content_length']
-    list_of_ids = row['id'].split(",")
+    list_of_ids:list = row['id'].split(",")
 
     ### AVOID DOUBLE ANALYSIS IF ONLY ONE POST IN TOPIC ###
     topicWasAnalysed = False
@@ -68,7 +68,7 @@ for index,row in topic_data.iterrows():
 
 
     print(" ------ ENTER THE THREAD ------")
-    for post in df.iterrows():
+    for i,post in df.iterrows():
         if(post['id'] in list_of_ids):
             print(" ------ NEW POST ------")
             specific_post_content = post['content']
