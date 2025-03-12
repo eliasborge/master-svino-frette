@@ -34,14 +34,23 @@ class FramingAgent(Agent):
         )
 
     def prompt(self,content, context):
-        return f"""
-        You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent
-        to provide you with insights into how relevant the surrounding messages are to the classification of this message.
-        The context is as follows: {context}
+        if(context==""):
+                    
+            return f"""
+            The message you are to analyze for hidden meanings is as follows: {content}.
 
-        The message you are to analyze for hidden meanings is as follows: {content}.
+            """
 
-        """
+        else:
+            
+            return f"""
+            You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent
+            to provide you with insights into how relevant the surrounding messages are to the classification of this message.
+            The context is as follows: {context}
+
+            The message you are to analyze for hidden meanings is as follows: {content}.
+
+            """
 
     def schema(self):
         class FramingAnalysis(BaseModel):

@@ -49,19 +49,32 @@ class MessageValidationAgent(Agent):
         """
 
     def prompt(self, content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context):
-        return (
-            f"You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent"
-            f"to provide you with insights into how relevant the surrounding messages are to the classification of this message."
-            f"The context is as follows: {context}"
+        
+        if(context==""):
+            return (
+                f"Assess the classification of this content: {content}.\n"
+                f"Given the analysis below, reason thoroughly and provide a single label per slot:\n"
+                f"- Otherness Detected: {otherness_boolean}\n"
+                f"- Target Group: {target_group}\n"
+                f"- Framing: {framing_style} using {framing_tool}\n"
+                f"- Intent of Violence: {intent_of_violence}\n"
+                f"- Call to Action: {call_to_action}\n\n"
+            )
+        else:
+            return (
+                
+                f"You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent"
+                f"to provide you with insights into how relevant the surrounding messages are to the classification of this message."
+                f"The context is as follows: {context}"
 
-            f"Assess the classification of this content: {content}.\n"
-            f"Given the analysis below, reason thoroughly and provide a single label per slot:\n"
-            f"- Otherness Detected: {otherness_boolean}\n"
-            f"- Target Group: {target_group}\n"
-            f"- Framing: {framing_style} using {framing_tool}\n"
-            f"- Intent of Violence: {intent_of_violence}\n"
-            f"- Call to Action: {call_to_action}\n\n"
-        )
+                f"Assess the classification of this content: {content}.\n"
+                f"Given the analysis below, reason thoroughly and provide a single label per slot:\n"
+                f"- Otherness Detected: {otherness_boolean}\n"
+                f"- Target Group: {target_group}\n"
+                f"- Framing: {framing_style} using {framing_tool}\n"
+                f"- Intent of Violence: {intent_of_violence}\n"
+                f"- Call to Action: {call_to_action}\n\n"
+            )
 
     def schema(self):
         class ValidationContent(BaseModel):

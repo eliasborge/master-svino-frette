@@ -42,30 +42,42 @@ class CallToActionAgent(Agent):
         """
 
     def prompt(self, content, targetGroup, framing, context):
-        if framing['framingStyle'] == "Implicit":
-            return f"""
-            You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent
-            to provide you with insights into how relevant the surrounding messages are to the classification of this message.
-            The context is as follows: {context}
+        if context == "":
+            if framing['framingStyle'] == "Implicit":
+                return f"""
+                The message you are to analyze for call-to-action rhetoric is as follows: {content}.
+                Analyze whether the message urges others to take action against the target group {targetGroup}.
+                Be aware that the message may contain indirect or subtle calls to action using {framing['framingTool']}."""
+            else:
+                return f"""
+                The message you are to analyze for call-to-action rhetoric is as follows: {content}.
+                Analyze whether the message urges others to take action against the target group {targetGroup}."""
 
-            The message you are to analyze for call-to-action rhetoric is as follows: {content}.
-            Analyze whether the message urges others to take action against the target group {targetGroup}.
-            Be aware that the message may contain indirect or subtle calls to action using {framing['framingTool']}."""
         else:
-            return f"""
-            You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent
-            to provide you with insights into how relevant the surrounding messages are to the classification of this message.
-            The context is as follows: {context}
+            if framing['framingStyle'] == "Implicit":
+                return f"""
+                You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent
+                to provide you with insights into how relevant the surrounding messages are to the classification of this message.
+                The context is as follows: {context}
 
-            The message you are to analyze for call-to-action rhetoric is as follows: {content}.
-            Analyze whether the message urges others to take action against the target group {targetGroup}."""
+                The message you are to analyze for call-to-action rhetoric is as follows: {content}.
+                Analyze whether the message urges others to take action against the target group {targetGroup}.
+                Be aware that the message may contain indirect or subtle calls to action using {framing['framingTool']}."""
+            else:
+                return f"""
+                You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent
+                to provide you with insights into how relevant the surrounding messages are to the classification of this message.
+                The context is as follows: {context}
+
+                The message you are to analyze for call-to-action rhetoric is as follows: {content}.
+                Analyze whether the message urges others to take action against the target group {targetGroup}."""
 
     def schema(self):
         class CallToActionSchema(BaseModel):
             call_to_action: int
         return CallToActionSchema.model_json_schema()
 
-    def __call__(self, content: str, targetGroup: str, framing: dict,context:dict, output_key: str = "call_to_action"):
+    def __call__(self, content: str, targetGroup: str, framing: dict,context, output_key: str = "call_to_action"):
         output = self.generate(
             system_prompt=self.system(),
             prompt=self.prompt(content, targetGroup, framing, context),
