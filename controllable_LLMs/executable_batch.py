@@ -1,0 +1,26 @@
+from controllable_LLMs.agents.call_to_action_agent import CallToActionAgent
+from controllable_LLMs.agents.context_agent import ContextAgent
+from controllable_LLMs.agents.framing_agent import FramingAgent
+from controllable_LLMs.agents.target_group_agent import TargetGroupAgent
+from .agents.example_agent import ExampleAgent
+from .agents.emotion_agent import EmotionAgent
+from .agents.otherness_agent import OthernessAgent
+from .agents.intent_agent import IntentAgent
+from .agents.message_validation_agent import MessageValidationAgent
+from .utils.rekey_dictionary import rekey_dict
+from json import loads
+
+import pandas as pd
+
+model = "mistral-small"
+
+df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
+grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
+
+### Due to the size of the topic threads, they haev been split into chunks ###
+
+grouped_messages = grouped_df
+
+###TESTING###
+grouped_messages = grouped_messages.sample(n=3)
+###TESTING###
