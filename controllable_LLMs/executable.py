@@ -5,7 +5,7 @@ from .agents.example_agent import ExampleAgent
 from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
 from .agents.intent_agent import IntentAgent
-from .agents.validation_agent import ValidationAgent
+from .agents.message_validation_agent import MessageValidationAgent
 from .utils .rekey_dictionary import rekey_dict
 from json import loads
 
@@ -22,7 +22,7 @@ collected_data = pd.DataFrame(columns=['document_id','num_posts_in_same_topic','
 otherness_agent = OthernessAgent(model)
 framing_agent = FramingAgent(model)
 intent_agent = IntentAgent(model)
-validation_agent = ValidationAgent(model)
+validation_agent = MessageValidationAgent(model)
 call_to_action_agent = CallToActionAgent(model)
 
 for index,row in data_random_3.iterrows():

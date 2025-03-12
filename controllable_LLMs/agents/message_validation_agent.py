@@ -3,7 +3,7 @@ from typing import List
 from .agent import Agent
 
 
-class ValidationAgent(Agent):
+class MessageValidationAgent(Agent):
     def __init__(self, model):
         super().__init__(model)
 
@@ -48,8 +48,12 @@ class ValidationAgent(Agent):
         }}
         """
 
-    def prompt(self, content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action):
+    def prompt(self, content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context):
         return (
+            f"You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent"
+            f"to provide you with insights into how relevant the surrounding messages are to the classification of this message."
+            f"The context is as follows: {context}"
+
             f"Assess the classification of this content: {content}.\n"
             f"Given the analysis below, reason thoroughly and provide a single label per slot:\n"
             f"- Otherness Detected: {otherness_boolean}\n"
@@ -76,10 +80,10 @@ class ValidationAgent(Agent):
 
         return ValidationSchema.model_json_schema()
 
-    def __call__(self,content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, output_key: str = "validation"):
+    def __call__(self,content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action,context, output_key: str = "validation"):
         output = self.generate(
             system_prompt=self.system(),
-            prompt=self.prompt(content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action),
+            prompt=self.prompt(content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context),
             schema=self.schema(),
             model=self.model
         )

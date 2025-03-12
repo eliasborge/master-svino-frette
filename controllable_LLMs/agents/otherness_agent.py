@@ -34,8 +34,13 @@ class OthernessAgent(Agent):
 
         """
 
-    def prompt(self, content):
-        return f"""The message you are to analyze for otherness is as follows: {content}.
+    def prompt(self, content, context):
+        return f"""
+        You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent
+        to provide you with insights into how relevant the surrounding messages are to the classification of this message.
+        The context is as follows: {context}
+        
+        The message you are to analyze for otherness is as follows: {content}.
         Give a thorough analysis on the message and determine if it shows signs of otherness.
 
         Provide a True or False value to the following statement: "The message shows signs of otherness" and identify the target group if any. Remember that otherness is true only if another group is framed negatively.
@@ -63,10 +68,10 @@ class OthernessAgent(Agent):
 
         return OthernessSchema.model_json_schema()
 
-    def __call__(self,content:str, output_key: str = "otherness"):
+    def __call__(self,content:str, context, output_key: str = "otherness"):
         output = self.generate(
             system_prompt=self.system(),
-            prompt=self.prompt(content),
+            prompt=self.prompt(content, context),
             schema=self.schema(),
             model=self.model
         )
