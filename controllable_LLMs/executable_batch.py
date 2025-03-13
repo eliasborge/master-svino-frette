@@ -29,9 +29,10 @@ batch_agent = BatchAgent(model)
 # Prepare DataFrame to store results
 collected_data = pd.DataFrame(columns=['document_id', 'extremism_labels'])
 
-for index, row in grouped_messages.iterrows():
+for row in grouped_messages.iterrows():
     content_list = row['content']
     content = "\n\n".join(content_list)
+    print(content)
     results = []
     for i in content_list:
         print(i)
