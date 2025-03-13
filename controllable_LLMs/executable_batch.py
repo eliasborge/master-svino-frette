@@ -7,8 +7,7 @@ from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
 from .agents.intent_agent import IntentAgent
 from .agents.message_validation_agent import MessageValidationAgent
-from .utils.rekey_dictionary import rekey_dict
-from json import loads
+
 
 import pandas as pd
 
@@ -35,6 +34,7 @@ for index, row in grouped_messages.iterrows():
     content = "\n\n".join(content_list)
     results = []
     for i in content_list:
+        print(i)
         results.append(batch_agent.__call__(i))
 
     print(results)
