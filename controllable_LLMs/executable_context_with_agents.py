@@ -41,7 +41,6 @@ for index,row in grouped_messages.iterrows():
 
     content_with_ids = df
     content_list = row['content']
-    print(isinstance(content_list, str))
     content = "\n\n".join(content_list)
     num_posts_in_conversation = row['num_posts']
     conversation_length = row['content_length']
