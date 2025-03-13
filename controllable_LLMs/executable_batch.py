@@ -37,7 +37,7 @@ for index, row in grouped_messages.iterrows():
     print(content_list)
     results = []
     print(isinstance(content_list, list))
-    for i in content:
+    for i in content_list:
         print(i)
         result = batch_agent.__call__(i)
         results.append(result)
