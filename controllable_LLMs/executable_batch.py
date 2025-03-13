@@ -31,8 +31,6 @@ collected_data = pd.DataFrame(columns=['document_id', 'extremism_labels'])
 
 for index, row in grouped_messages.iterrows():
     content_list = row['content']
-    print(content_list)
-    content = "\n\n".join(content_list)
     results = []
     for i in content_list:
         print(i)
