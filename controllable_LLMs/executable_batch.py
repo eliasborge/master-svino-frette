@@ -28,10 +28,11 @@ grouped_messages = grouped_messages.sample(n=3)
 batch_agent = BatchAgent(model)
 
 # Prepare DataFrame to store results
-collected_data = pd.DataFrame(columns=['document_id', 'extremism_labels'])
+collected_data = pd.DataFrame(columns=['video_num','id', 'agent_flags'])
 
 for index, row in grouped_messages.iterrows():
     content = row['content']
+    list_of_ids:list = row['id'].split(", ")
 
     content_list = content.split("###---###")
     print(content_list)
@@ -44,5 +45,10 @@ for index, row in grouped_messages.iterrows():
 
     print(results)
 
+    for i, flag in enumerate(results):
+        new_row = {'video_num': list_of_ids[i][0],'id':list_of_ids[i], 'agent_flags': flag}
+        new_row_df = pd.DataFrame([new_row])
+        collected_data = pd.concat([collected_data, new_row_df], ignore_index=True)
 
+    collected_data.to_csv("data/collected_batch_agents", index=False)
 
