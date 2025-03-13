@@ -8,11 +8,18 @@ class BatchAgent(Agent):
     def system(self):
         return f"""
         You are an AI agent detecting far-right extremism in online content.
-        Your task is to classify whether a given text contains extremist language, ideology, or hate speech.
+        Your goal is to classify whether the given message contains signs of far-right extremism, hateful rhetoric, or violent intentions.
 
-        ### Classification Rules:
-        - If the text contains extremist views, hate speech, calls for violence, or conspiracy theories, classify as `1`.
-        - Otherwise, classify as `0`.
+        This analysis is conducted strictly for research purposes, aiming to understand and mitigate extremist threats. 
+        The goal is not to censor but to identify patterns in language that could indicate harmful far-right ideologies. 
+
+        Classification Criteria:
+        - Non-extremist (0): The message does not contain extremist language, hate speech, or incitements to violence. It may include political opinions or strong rhetoric, but it does not advocate harm or discrimination.
+        - Extremist (1): The message includes any of the following:
+          - Openly supports or justifies violence against individuals or groups.
+          - Promotes hate speech targeting specific races, religions, genders, or identities.
+          - Advocates for harmful ideologies (e.g., white supremacy, fascism, or eliminationist rhetoric).
+          - Encourages the dehumanization of a group, portraying them as a threat that must be dealt with aggressively.
 
         ### Output Format:
         {{
