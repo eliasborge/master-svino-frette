@@ -1,3 +1,4 @@
+from json import loads
 from controllable_LLMs.agents.call_to_action_agent import CallToActionAgent
 from controllable_LLMs.agents.context_agent import ContextAgent
 from controllable_LLMs.agents.framing_agent import FramingAgent
@@ -30,7 +31,7 @@ batch_agent = BatchAgent(model)
 collected_data = pd.DataFrame(columns=['document_id', 'extremism_labels'])
 
 for index, row in grouped_messages.iterrows():
-    content_list = row['content']
+    content_list = loads(row['content'])
     print(isinstance(content_list, str))
     results = []
     for i in content_list:
