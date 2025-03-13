@@ -11,7 +11,7 @@ from json import loads
 
 import pandas as pd
 
-model = "wizardlm2:7b"
+model = "mistral-small"
 
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
