@@ -34,6 +34,7 @@ for index, row in grouped_messages.iterrows():
     content_list = row['content']
     content = "\n\n".join(content_list)
     results = []
+    print(isinstance(content, str))
     for i in content:
         print(i)
         result = batch_agent.__call__(i)
