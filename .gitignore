@@ -179,3 +179,4 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+data/testdata/test_results_from_idun/collected_batch_agents.csv
