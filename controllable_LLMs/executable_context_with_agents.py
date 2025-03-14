@@ -12,7 +12,8 @@ from json import loads
 
 import pandas as pd
 
-model = "mistral-small"
+# model = "mistral-small"
+model = "gemma3:27b"
 
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
@@ -48,8 +49,6 @@ for index,row in grouped_messages.iterrows():
     list_of_ids:list = row['id'].split(", ")
 
     print(list_of_ids)
-    print(content)
-    print(content_list)
 
     context = context_agent.__call__(content)
     print("Context: ",context)
