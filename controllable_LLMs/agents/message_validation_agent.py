@@ -22,7 +22,6 @@ class MessageValidationAgent(Agent):
         - Content should **only** be classified as 'Violence risk' (**label 2**) if there is **clear intent to harm**.
         - If the message contains **aggressive language, hate speech or hostility, but does not show significant implicit or explicit intent ov violence, it should **not** be classified as 'Violence risk' (label 2). 
             Instead, consider **'Extremist but no violence risk' (label 1)**. 
-            - However, if IntentAgent or CallToActionAgent outputs are both classified as "HIGH", **marked by the number 3**, it is likely that the message should be classified as 'Violence risk' (label 2).
         - If the classification is **uncertain**, flag the message for further review.
 
         **Error Handling & Flags:**
