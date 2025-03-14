@@ -40,13 +40,16 @@ context_agent = ContextAgent(model)
 for index,row in grouped_messages.iterrows():
 
     content_with_ids = df
-    content_list = row['content']
-    content = "\n\n".join(content_list)
+    raw_content = row['content']
+    content_list = raw_content.split("###---###")
+    content = "\nNew message:\n".join(content_list)
     num_posts_in_conversation = row['num_posts']
     conversation_length = row['content_length']
     list_of_ids:list = row['id'].split(", ")
 
     print(list_of_ids)
+    print(content)
+    print(content_list)
 
     context = context_agent.__call__(content)
     print("Context: ",context)
