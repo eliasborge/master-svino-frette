@@ -8,13 +8,11 @@ from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
 from .agents.intent_agent import IntentAgent
 from .agents.message_validation_agent import MessageValidationAgent
-from transformers import AutoTokenizer
 
 
 import pandas as pd
 
 model = "mistral-small"
-tokenizer = AutoTokenizer.from_pretrained("mistralai/Mistral-Small-24B-Instruct-2501")
 
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
 grouped_messages = grouped_df
@@ -37,8 +35,6 @@ for index, row in grouped_messages.iterrows():
     results = []
     for i in content_list:
         print(i)
-        tokens = tokenizer.tokenize(i)
-        print(tokens)
         result = batch_agent.__call__(i)
         results.append(result)
 
