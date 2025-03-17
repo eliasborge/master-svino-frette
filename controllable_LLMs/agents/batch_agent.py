@@ -41,6 +41,8 @@ class BatchAgent(Agent):
         {{
             "violent_label": 1 or 0
         }}
+
+        if the string is empty return 0. 
         """
 
     def prompt(self, content):
