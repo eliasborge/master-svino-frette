@@ -55,12 +55,29 @@ for index,row in grouped_messages.iterrows():
 
     for index, post in df[df['id'].isin(list_of_ids)].iterrows():
         specific_post_content = post['content']
+        post_id = post['id']
 
-        # Get the context messages (two before and two after)
-        context_before = "\n".join(df[df['id'] == list_of_ids[j]]['content'].values[0] for j in range(max(0, list_of_ids.index(post['id'])-2), list_of_ids.index(post['id'])))
-        context_after = "\n".join(df[df['id'] == list_of_ids[j]]['content'].values[0] for j in range(list_of_ids.index(post['id'])+1, min(len(list_of_ids), list_of_ids.index(post['id'])+3)))
-        content = f"History before\n{context_before}\nTHIS IS THE MESSAGE YOU SHOULD CLASSIFY{specific_post_content}\nHistory After\n{context_after}"
+        # Ensure post ID exists in list_of_ids before using index lookup
+        if post_id not in list_of_ids:
+            print(f"Warning: Post ID {post_id} not found in list_of_ids")
+            continue
 
+        post_index = list_of_ids.index(post_id)
+
+        # Get context messages (two before and two after) safely
+        context_before = "\n".join(
+            df[df['id'] == list_of_ids[j]]['content'].values[0] 
+            if not df[df['id'] == list_of_ids[j]].empty else "[MISSING]"
+            for j in range(max(0, post_index - 2), post_index)
+        )
+
+        context_after = "\n".join(
+            df[df['id'] == list_of_ids[j]]['content'].values[0] 
+            if not df[df['id'] == list_of_ids[j]].empty else "[MISSING]"
+            for j in range(post_index + 1, min(len(list_of_ids), post_index + 3))
+        )
+
+        content = f"History before\n{context_before}\nTHIS IS THE MESSAGE YOU SHOULD CLASSIFY\n{specific_post_content}\nHistory After\n{context_after}"
         print(content)
 
         specific_post_otherness = otherness_agent.__call__(specific_post_content, context = content,  mode=mode)
@@ -75,10 +92,10 @@ for index,row in grouped_messages.iterrows():
         specific_post_call_to_action = call_to_action_agent.__call__(specific_post_content, specific_post_otherness['targetGroup'], specific_post_framing, context=content, mode=mode)
         print(specific_post_call_to_action)
 
-        specific_post_validation = message_validation_agent.__call__(specific_post_content, otherness_boolean = specific_post_otherness['othernessBoolean'], target_group = specific_post_otherness['targetGroup'], framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent, call_to_action=specific_post_call_to_action, context=content)
+        specific_post_validation = message_validation_agent.__call__(specific_post_content, otherness_boolean = specific_post_otherness['othernessBoolean'], target_group = specific_post_otherness['targetGroup'], framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent, call_to_action=specific_post_call_to_action, context=content, mode=mode)
         print(specific_post_validation)
 
-        new_row = {'document_id': post_id, 'num_posts_in_conversation': num_posts_in_conversation, 
+        new_row = {'document_id': post['id'], 'num_posts_in_conversation': num_posts_in_conversation, 
         'conversation_length': conversation_length,  
         'violence_label': specific_post_validation['validated_label'], 'intent_label': specific_post_intent, 
         'call_to_action': specific_post_call_to_action, 'flagged_issues': specific_post_validation['flagged_issues']}
