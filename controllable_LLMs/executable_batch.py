@@ -17,9 +17,6 @@ model = "mistral-small"
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
 grouped_messages = grouped_df
 
-# Filter grouped_messages to only include the message with id 8_3356
-grouped_messages = grouped_messages[grouped_messages['id'].str.contains('8_3356')]
-
 
 batch_agent = BatchAgent(model)
 
