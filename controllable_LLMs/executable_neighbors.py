@@ -53,13 +53,15 @@ for index,row in grouped_messages.iterrows():
     print(content)
 
 
-    for i, post_id in enumerate(list_of_ids):
-        specific_post_content = df[df['id'] == post_id]['content'].values[0]
+    for index, post in df[df['id'].isin(list_of_ids)].iterrows():
+        specific_post_content = post['content']
 
         # Get the context messages (two before and two after)
-        context_before = "\n".join(df[df['id'] == list_of_ids[j]]['content'].values[0] for j in range(max(0, i-2), i))
-        context_after = "\n".join(df[df['id'] == list_of_ids[j]]['content'].values[0] for j in range(i+1, min(len(list_of_ids), i+3)))
+        context_before = "\n".join(df[df['id'] == list_of_ids[j]]['content'].values[0] for j in range(max(0, list_of_ids.index(post['id'])-2), list_of_ids.index(post['id'])))
+        context_after = "\n".join(df[df['id'] == list_of_ids[j]]['content'].values[0] for j in range(list_of_ids.index(post['id'])+1, min(len(list_of_ids), list_of_ids.index(post['id'])+3)))
         content = f"History before\n{context_before}\nTHIS IS THE MESSAGE YOU SHOULD CLASSIFY{specific_post_content}\nHistory After\n{context_after}"
+
+        print(content)
 
         specific_post_otherness = otherness_agent.__call__(specific_post_content, context = content,  mode=mode)
         print(specific_post_otherness)
