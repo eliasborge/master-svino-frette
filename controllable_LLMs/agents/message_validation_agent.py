@@ -19,16 +19,16 @@ class MessageValidationAgent(Agent):
         - **CallToActionAgent**: Identifies if the content encourages others to perform violent actions against the target group.
 
         **Classification Rules:**
-        - Content should **only** be classified as 'Violence risk' (**label 2**) if there is **clear, direct, and explicit intent to harm**.
-        - If the message contains **aggressive language, hostility, or implicit threats**, but lacks **explicit intent**, it should **not** be classified as 'Violence risk' (label 2). Instead, consider **'Extremist but no violence risk' (label 1)**.
+        - Content should **only** be classified as 'Violence risk' (**label 2**) if there is **clear intent to harm**.
+        - If the message contains **aggressive language, hate speech or hostility, but does not show significant implicit or explicit intent ov violence, it should **not** be classified as 'Violence risk' (label 2). 
+            Instead, consider **'Extremist but no violence risk' (label 1)**. 
         - If the classification is **uncertain**, flag the message for further review.
 
         **Error Handling & Flags:**
         1: If there are inconsistencies between the agent outputs, use **flag 0**.
-        2: If the outputs are consistent, but the classification is **uncertain**, use **flag 1**.
+        2: If the outputs are consistent, but you are unsure about your final decision -> classification is **uncertain**, use **flag 1**.
         3: If the content in your opinion does **not align** with the classification, use **flag 2**, and label it uncertain.
-        4: If violent language is present but **intent is ambiguous or indirect**, use **flag 4**, and classify as extremist but not violent.
-        5: If you are unable to process the content due to content filters, use **flag 3**.
+        4: If you are unable to process the content due to content filters, use **flag 3**.
 
         **Labeling:**
         - **Answer 0** → 'No violence risk'
