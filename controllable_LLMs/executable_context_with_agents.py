@@ -27,6 +27,7 @@ grouped_messages = grouped_df
 grouped_messages = grouped_messages.sample(n=3)
 ###TESTING###
 
+mode="context"
 
 collected_data = pd.DataFrame(columns=['document_id','num_posts_in_conversation','conversation_length','violence_label','intent_label','call_to_action','flagged_issues'])
 
@@ -49,6 +50,7 @@ for index,row in grouped_messages.iterrows():
     list_of_ids:list = row['id'].split(", ")
 
     print(list_of_ids)
+    print(content)
 
     context = context_agent.__call__(content)
     print("Context: ",context)
@@ -57,20 +59,20 @@ for index,row in grouped_messages.iterrows():
     for index,post in df[df['id'].isin(list_of_ids)].iterrows():
         specific_post_content = post['content']
 
-        specific_post_otherness = otherness_agent.__call__(specific_post_content, context)
+        specific_post_otherness = otherness_agent.__call__(specific_post_content, context,mode=mode)
         print(specific_post_otherness)
 
-        specific_post_framing = framing_agent.__call__(specific_post_content, context)
+        specific_post_framing = framing_agent.__call__(specific_post_content, context,mode=mode)
         print(specific_post_framing)
 
-        specific_post_intent = intent_agent.__call__(specific_post_content, specific_post_otherness['targetGroup'], specific_post_framing, context)
+        specific_post_intent = intent_agent.__call__(specific_post_content, specific_post_otherness['targetGroup'], specific_post_framing, context,mode=mode)
         print(specific_post_intent)
 
-        specific_post_call_to_action = call_to_action_agent.__call__(specific_post_content, specific_post_otherness['targetGroup'], specific_post_framing, context)
+        specific_post_call_to_action = call_to_action_agent.__call__(specific_post_content, specific_post_otherness['targetGroup'], specific_post_framing, context,mode=mode)
         print(specific_post_call_to_action)
 
         ##TODO DO SOMETHING WITH THIS
-        specific_post_validation = message_validation_agent.__call__(specific_post_content, otherness_boolean = specific_post_otherness['othernessBoolean'], target_group = specific_post_otherness['targetGroup'], framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent, call_to_action=specific_post_call_to_action, context=context)
+        specific_post_validation = message_validation_agent.__call__(specific_post_content, otherness_boolean = specific_post_otherness['othernessBoolean'], target_group = specific_post_otherness['targetGroup'], framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent, call_to_action=specific_post_call_to_action, context=context,mode=mode)
         print(specific_post_validation)
 
         if(topicWasAnalysed):

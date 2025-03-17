@@ -33,20 +33,30 @@ class FramingAgent(Agent):
 
         )
 
-    def prompt(self,content, context):
-        if(context==""):
+    def prompt(self,content, context, mode):
+        if(mode=="no-context"):
                     
             return f"""
             The message you are to analyze for hidden meanings is as follows: {content}.
 
             """
 
-        else:
+        elif(mode=="context"):
             
             return f"""
             You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent
             to provide you with insights into how relevant the surrounding messages are to the classification of this message.
             The context is as follows: {context}
+
+            The message you are to analyze for hidden meanings is as follows: {content}.
+
+            """
+        
+        elif(mode=="neighbor"):
+            
+            return f"""
+            You have been given a message that is part of a series of neighboring messages. These neighboring messages provide additional context that may help in the classification of the message.
+            The thread as follows: {context}
 
             The message you are to analyze for hidden meanings is as follows: {content}.
 
@@ -62,10 +72,10 @@ class FramingAgent(Agent):
 
         return FramingSchema.model_json_schema()
 
-    def __call__(self, content, context, output_key: str = "framing"):
+    def __call__(self, content, context, mode:str, output_key: str = "framing"):
         output = self.generate(
             system_prompt=self.system(),
-            prompt=self.prompt(content, context),
+            prompt=self.prompt(content, context, mode),
             schema=self.schema(),
             model=self.model
         )

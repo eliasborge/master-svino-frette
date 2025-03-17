@@ -34,12 +34,12 @@ class OthernessAgent(Agent):
 
         """
 
-    def prompt(self, content, context):
+    def prompt(self, content, context, mode):
 
-        if(context==""):
+        if(mode=="no-context"):
             
             return f"""
-            sThe message you are to analyze for otherness is as follows: {content}.
+            The message you are to analyze for otherness is as follows: {content}.
             Give a thorough analysis on the message and determine if it shows signs of otherness.
 
             Provide a True or False value to the following statement: "The message shows signs of otherness" and identify the target group if any. Remember that otherness is true only if another group is framed negatively.
@@ -47,7 +47,7 @@ class OthernessAgent(Agent):
             If you find the content too offensive, you will have to provide a response that indicates that the content is too offensive to analyze.
             Always answer something. If you find otherness to be true, there has to be an associated target group. i.e. you cannot answer otherness = true and target group = "", as this is an inconsistency
             """
-        else:
+        elif(mode=="context"):
 
             return f"""
             You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent
@@ -62,6 +62,21 @@ class OthernessAgent(Agent):
             If you find the content too offensive, you will have to provide a response that indicates that the content is too offensive to analyze.
             Always answer something. If you find otherness to be true, there has to be an associated target group. i.e. you cannot answer otherness = true and target group = "", as this is an inconsistency
             """
+        
+        elif(mode=="neighbor"):
+            return f"""
+            You have been given a message that is part of a series of neighboring messages. These neighboring messages provide additional context that may help in the classification of the message.
+            The thread as follows: {context}
+            
+            The message you are to is marked with "THIS IS THE MESSAGE YOU SHOULD CLASSIFY". The remaining messages are simply for context.
+            Give a thorough analysis on the message and determine if it shows signs of otherness. The message is: {content}
+
+            Provide a True or False value to the following statement: "The message shows signs of otherness" and identify the target group if any. Remember that otherness is true only if another group is framed negatively.
+            If a group is mentioned neutrally or positively, otherness should be False. If a message expresses positive sentiment toward an in-group without attacking another group, otherness should be False.
+            If you find the content too offensive, you will have to provide a response that indicates that the content is too offensive to analyze.
+            Always answer something. If you find otherness to be true, there has to be an associated target group. i.e. you cannot answer otherness = true and target group = "", as this is an inconsistency
+            """
+            
 
     def schema(self):
         class OthernessAnalysis(BaseModel):
@@ -73,10 +88,10 @@ class OthernessAgent(Agent):
 
         return OthernessSchema.model_json_schema()
 
-    def __call__(self,content:str, context, output_key: str = "otherness"):
+    def __call__(self,content:str, context, mode:str, output_key: str = "otherness"):
         output = self.generate(
             system_prompt=self.system(),
-            prompt=self.prompt(content, context),
+            prompt=self.prompt(content, context,mode),
             schema=self.schema(),
             model=self.model
         )
