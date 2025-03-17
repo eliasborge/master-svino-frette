@@ -14,7 +14,7 @@ from transformers import AutoTokenizer
 import pandas as pd
 
 model = "mistral-small"
-tokenizer = AutoTokenizer.from_pretrained(model)
+tokenizer = AutoTokenizer.from_pretrained("Mistral-Small-24B-Instruct-2501")
 
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
 grouped_messages = grouped_df
