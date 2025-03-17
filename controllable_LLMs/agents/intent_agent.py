@@ -27,10 +27,10 @@ class IntentAgent(Agent):
         You must always provide an answer. It should always have intent at the end, not just the classification.
 
         Labeling:
-        Answer 0 if it is a No intent
-        Answer 1 if it is a Low intent
-        Answer 2 if it is a Moderate intent
-        Answer 3 if it is a High intent
+        Answer "No Intent of violence" if it is a No intent
+        Answer "Low Intent of violence" if it is a Low intent
+        Answer "Moderate Intent of violence" if it is a Moderate intent
+        Answer "High Intent of violence" if it is a High intent
 
 
         """
@@ -95,7 +95,7 @@ class IntentAgent(Agent):
         
 
         class IntentSchema(BaseModel):
-            intent_of_violence: int
+            intent_of_violence: str
 
         return IntentSchema.model_json_schema()
 
