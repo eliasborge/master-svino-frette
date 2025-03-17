@@ -8,18 +8,20 @@ from .agents.emotion_agent import EmotionAgent
 from .agents.otherness_agent import OthernessAgent
 from .agents.intent_agent import IntentAgent
 from .agents.message_validation_agent import MessageValidationAgent
+from transformers import AutoTokenizer
 
 
 import pandas as pd
 
 model = "mistral-small"
+tokenizer = AutoTokenizer.from_pretrained(model)
 
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
-
-
-### Due to the size of the topic threads, they haev been split into chunks ###
-
 grouped_messages = grouped_df
+
+# Filter grouped_messages to only include the message with id 8_3356
+grouped_messages = grouped_messages[grouped_messages['id'].str.contains('8_3356')]
+
 
 batch_agent = BatchAgent(model)
 
@@ -35,6 +37,8 @@ for index, row in grouped_messages.iterrows():
     results = []
     for i in content_list:
         print(i)
+        tokens = tokenizer.tokenize(i)
+        print(tokens)
         result = batch_agent.__call__(i)
         results.append(result)
 
@@ -44,5 +48,5 @@ for index, row in grouped_messages.iterrows():
         collected_data = pd.concat([collected_data, new_row_df], ignore_index=True)
 
     
-collected_data.to_csv("data/collected_batch_agents.csv", index=False)
+#collected_data.to_csv("data/collected_batch_agents.csv", index=False)
 

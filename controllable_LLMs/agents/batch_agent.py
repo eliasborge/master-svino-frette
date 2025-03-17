@@ -39,21 +39,21 @@ class BatchAgent(Agent):
 
         ### Output Format:
         {{
-            "extremism_label": 1 or 0
+            "violent_label": 1 or 0
         }}
         """
 
     def prompt(self, content):
-        return f"Analyze this text and classify it as extremist (1) or non-extremist (0): {content}"
+        return f"Analyze this text and classify it as violent (1) or non-violent (0): {content}"
 
     def schema(self):
-        class ExtremismResult(BaseModel):
-            extremism_label: int
+        class ViolentResult(BaseModel):
+            violent_label: int
 
-        class ExtremismSchema(BaseModel):
-            result: ExtremismResult
+        class ViolentSchema(BaseModel):
+            result: ViolentResult
 
-        return ExtremismSchema.model_json_schema()
+        return ViolentSchema.model_json_schema()
 
     def __call__(self, content, output_key: str = "result"):
         output = self.generate(
@@ -63,4 +63,4 @@ class BatchAgent(Agent):
             model=self.model
         )
         if output:
-            return output[output_key]['extremism_label']
+            return output[output_key]['violent_label']
