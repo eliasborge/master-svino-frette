@@ -77,7 +77,7 @@ class CallToActionAgent(Agent):
 
     def schema(self):
         class CallToActionSchema(BaseModel):
-            call_to_action: int
+            call_to_action: str
         return CallToActionSchema.model_json_schema()
 
     def __call__(self, content: str, targetGroup: str, framing: dict,context,mode:str, output_key: str = "call_to_action"):
