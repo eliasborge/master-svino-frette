@@ -19,8 +19,8 @@ class MessageValidationAgent(Agent):
         - **CallToActionAgent**: Identifies if the content encourages others to perform violent actions against the target group.
 
         **Classification Rules:**
-        - Content should **only** be classified as 'Violence risk' (**label 2**) if there is **clear intent to harm**.
-        - If the message contains **aggressive language, hate speech or hostility, but does not show significant implicit or explicit intent ov violence, it should **not** be classified as 'Violence risk' (label 2). 
+        - Content should **only** be classified as 'Violence risk' (**label 2**) if there is **clear intent to harm** either oneself, an individual or a group.
+        - If the message contains **aggressive language, hate speech or hostility, but does not show significant implicit or explicit intent of violence, it should **not** be classified as 'Violence risk' (label 2). 
             Instead, consider **'Extremist but no violence risk' (label 1)**. 
         - If the classification is **uncertain**, flag the message for further review.
 
@@ -56,12 +56,12 @@ class MessageValidationAgent(Agent):
                 f"- Framing: {framing_style} using {framing_tool}\n"
                 f"- Intent of Violence: {intent_of_violence}\n"
                 f"- Call to Action: {call_to_action}\n\n"
-                f"IMPORTANT: Only classify as 'Violence risk' (2) if there is an **explicit, undeniable, and direct call to harm**. If intent is ambiguous, classify as 'Extremist but no violence risk' (1) and use **flag 4**."
+              
             )
         elif(mode=="context"):
             return (
                 f"You have been given a message that is part of a broader conversation. This conversation has been analyzed by a context agent "
-                f"to provide insights into the classification of this message. The context is as follows: {context}\n\n"
+                f"to provide insights into the classification of this message. The context analysis is as follows: {context}\n\n"
 
                 f"Assess the classification of this content: {content}.\n"
                 f"Given the analysis below, reason thoroughly before assigning a classification:\n"
@@ -70,7 +70,7 @@ class MessageValidationAgent(Agent):
                 f"- Framing: {framing_style} using {framing_tool}\n"
                 f"- Intent of Violence: {intent_of_violence}\n"
                 f"- Call to Action: {call_to_action}\n\n"
-                f"IMPORTANT: Only classify as 'Violence risk' (2) if there is an **explicit, undeniable, and direct call to harm**. If intent is ambiguous, classify as 'Extremist but no violence risk' (1) and use **flag 4**."
+                
             )
         
         elif(mode=="neighbor"):
@@ -85,7 +85,7 @@ class MessageValidationAgent(Agent):
                 f"- Framing: {framing_style} using {framing_tool}\n"
                 f"- Intent of Violence: {intent_of_violence}\n"
                 f"- Call to Action: {call_to_action}\n\n"
-                f"IMPORTANT: Only classify as 'Violence risk' (2) if there is an **explicit, undeniable, and direct call to harm**. If intent is ambiguous, classify as 'Extremist but no violence risk' (1) and use **flag 4**."
+               
              )
     def schema(self):
         class ValidationContent(BaseModel):
