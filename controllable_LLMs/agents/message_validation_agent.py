@@ -45,9 +45,9 @@ class MessageValidationAgent(Agent):
         }}
         """
 
-    def prompt(self, content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context):
+    def prompt(self, content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context,mode):
         
-        if context == "":
+        if mode == "no-context":
             return (
                 f"Assess the classification of this content: {content}.\n"
                 f"Given the analysis below, reason thoroughly before assigning a classification:\n"
@@ -58,7 +58,7 @@ class MessageValidationAgent(Agent):
                 f"- Call to Action: {call_to_action}\n\n"
                 f"IMPORTANT: Only classify as 'Violence risk' (2) if there is an **explicit, undeniable, and direct call to harm**. If intent is ambiguous, classify as 'Extremist but no violence risk' (1) and use **flag 4**."
             )
-        else:
+        elif(mode=="context"):
             return (
                 f"You have been given a message that is part of a broader conversation. This conversation has been analyzed by a context agent "
                 f"to provide insights into the classification of this message. The context is as follows: {context}\n\n"
@@ -72,7 +72,21 @@ class MessageValidationAgent(Agent):
                 f"- Call to Action: {call_to_action}\n\n"
                 f"IMPORTANT: Only classify as 'Violence risk' (2) if there is an **explicit, undeniable, and direct call to harm**. If intent is ambiguous, classify as 'Extremist but no violence risk' (1) and use **flag 4**."
             )
+        
+        elif(mode=="neighbor"):
+             return (
+                f"You have been given a message that is part of a series of neighboring messages. These neighboring messages provide additional context that may help in the classification of the message."
+                f"The thread as follows: {context}"
 
+                f"Assess the classification of this content: {content}.\n"
+                f"Given the analysis below, reason thoroughly before assigning a classification:\n"
+                f"- Otherness Detected: {otherness_boolean}\n"
+                f"- Target Group: {target_group}\n"
+                f"- Framing: {framing_style} using {framing_tool}\n"
+                f"- Intent of Violence: {intent_of_violence}\n"
+                f"- Call to Action: {call_to_action}\n\n"
+                f"IMPORTANT: Only classify as 'Violence risk' (2) if there is an **explicit, undeniable, and direct call to harm**. If intent is ambiguous, classify as 'Extremist but no violence risk' (1) and use **flag 4**."
+             )
     def schema(self):
         class ValidationContent(BaseModel):
             validated_label: int
@@ -84,10 +98,10 @@ class MessageValidationAgent(Agent):
 
         return ValidationSchema.model_json_schema()
 
-    def __call__(self, content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context, output_key: str = "validation"):
+    def __call__(self, content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context,mode:str, output_key: str = "validation"):
         output = self.generate(
             system_prompt=self.system(),
-            prompt=self.prompt(content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context),
+            prompt=self.prompt(content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context,mode),
             schema=self.schema(),
             model=self.model
         )

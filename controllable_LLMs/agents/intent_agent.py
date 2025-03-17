@@ -36,9 +36,9 @@ class IntentAgent(Agent):
         """
 
 
-    def prompt(self, content, targetGroup, framing, context):
+    def prompt(self, content, targetGroup, framing, context, mode):
 
-        if(context==""):
+        if(mode=="no-context"):
                 
             if (str(framing['framingStyle']).lower() == "implicit"):
                 return f"""
@@ -51,7 +51,7 @@ class IntentAgent(Agent):
                 The message you are to analyze for intent of violence is as follows: {content}.
                 Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
                 """
-        else:
+        elif(mode=="context"):
                 
             if (str(framing['framingStyle']).lower() == "implicit"):
                 return f"""
@@ -68,6 +68,25 @@ class IntentAgent(Agent):
                 You have been given a message that is a part of a broader conversation. This conversation has been analyzed by a context agent
                 to provide you with insights into how relevant the surrounding messages are to the classification of this message.
                 The context is as follows: {context}
+                
+                The message you are to analyze for intent of violence is as follows: {content}.
+                Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
+                """
+            
+        elif(mode=="neighbor"):
+            if (str(framing['framingStyle']).lower() == "implicit"):
+                return f"""
+                You have been given a message that is a part of a broader conversation.
+                The context is as follows: {context}
+
+                The message you are to analyze for intent of violence is as follows: {content}.
+                Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
+                Be aware the message may contain hidden meanings by the use of {framing['framingTool']}
+                """
+            else:
+                return f"""
+                You have been given a message that is part of a series of neighboring messages. These neighboring messages provide additional context that may help in the classification of the message.
+                The thread as follows: {context}
                 
                 The message you are to analyze for intent of violence is as follows: {content}.
                 Analyze the message to determine if it shows signs of intent of violence against the target group {targetGroup}.
@@ -80,10 +99,10 @@ class IntentAgent(Agent):
 
         return IntentSchema.model_json_schema()
 
-    def __call__(self,content:str,targetGroup:str, framing:dict, context, output_key: str = "intent_of_violence"):
+    def __call__(self,content:str,targetGroup:str, framing:dict, context, mode:str, output_key: str = "intent_of_violence"):
         output = self.generate(
             system_prompt=self.system(),
-            prompt=self.prompt(content,targetGroup, framing, context),
+            prompt=self.prompt(content,targetGroup, framing, context, mode),
             schema=self.schema(),
             model=self.model
         )
