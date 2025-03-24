@@ -17,9 +17,6 @@ model = "mistral-small"
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
 grouped_messages = grouped_df
 
-# Filter grouped_messages to only include the message with id 8_3356
-grouped_messages = grouped_messages[grouped_messages['id'].str.contains('8_3356')]
-
 
 batch_agent = BatchAgent(model)
 
@@ -45,5 +42,5 @@ for index, row in grouped_messages.iterrows():
         collected_data = pd.concat([collected_data, new_row_df], ignore_index=True)
 
     
-#collected_data.to_csv("data/collected_batch_agents.csv", index=False)
+collected_data.to_csv("data/collected_batch_agents.csv", index=False)
 

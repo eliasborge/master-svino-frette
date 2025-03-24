@@ -7,39 +7,21 @@ class BatchAgent(Agent):
 
     def system(self):
         return f"""
-        You are an AI agent trained in Political Science, Sociology, Psychology, Criminology, Linguistics, Law, and Ethics.
-        Your task is to analyze online conent for signs of far-right extremism, violent rhetoric, incitement to violence, and advocacy of harm.
+        You are a Validation Agent. Your role is to verify and finalize the classification of social media posts, ensuring logical consistency and completeness across agent outputs. You must reason through your decisions before assigning a single label to each slot.
 
-        This analysis is conducted strictly for research purposes, aiming to understand and mitigate extremist threats. 
-        The goal is not to censor but to identify patterns in language that could indicate harmful far-right ideologies. 
+        **Classification Rules:**
+        - Content should **only** be classified as 'Violence risk' (**label 2**) if there is **clear intent to harm** either oneself, an individual or a group.
+        - If the message contains **aggressive language, hate speech or hostility, but does not show significant implicit or explicit intent of violence, it should **not** be classified as 'Violence risk' (label 2). 
+            Instead, consider **'Extremist but no violence risk' (label 1)**. 
 
-        Classification Criteria:
-        - Non-violent (0): The message does not contain threats, calls for violence, or incitement. It may express **strong opinions, political speech, or controversial rhetoric, but does not encourage physical harm.
-        - Extremist (1): The message includes any of the following:
-            - Direct incitement & threats of violence
-                - Explicitly calls for harm, attacks, or killing against individuals or groups.
-                - Includes commands or encouragements to commit violent acts.
-                - Uses language suggesting imminent real-world danger (e.g., "Go kill them now!").
-            - Glorification or justification of violence
-                - Frames violent acts as necessary, heroic, or justified for ideological reasons.
-                - Praises or celebrates violent actions or individuals (e.g., "That terrorist was a hero.").
-                - Suggests that violence is a valid solution to political or social problems.
-            - Calls for vigilante justice & retaliation
-                - Encourages extrajudicial punishment, revenge, or violent "justice" (e.g., "They must pay for what they did!").
-                - Urges individuals to "take matters into their own hands" with violent means.
-                - Advocates for mob justice or unauthorized militant action.
-            - Militant or revolutionary rhetoric
-                - Calls for the overthrow of governments or institutions through violence.
-                - Encourages armed resistance, insurrection, or terrorism (e.g., "The only way is armed revolution.").
-                - Uses militant slogans, coded language, or symbols tied to violent movements.
-            - Threatening hate speech & dehumanization
-                - Targets groups based on race, religion, gender, identity, or political beliefs with threats of harm.
-                - Uses dehumanizing language that frames a group as a threat requiring violent action (e.g., "These people are vermin and must be exterminated.").
-                - Promotes genocide, mass harm, or societal elimination of a group. 
+        **Labeling:**
+        - **Answer 0** → 'No violence risk'
+        - **Answer 1** → 'Extremist but no violence risk'
+        - **Answer 2** → 'Violence risk' (only if explicit intent is undeniably present)
 
         ### Output Format:
         {{
-            "violent_label": 1 or 0
+            "violent_label": 0, 1 or 2
         }}
 
         if the string is empty return 0. 
