@@ -28,7 +28,7 @@ class BatchAgent(Agent):
         """
 
     def prompt(self, content):
-        return f"Analyze this text and classify it as violent (1) or non-violent (0): {content}"
+        return f"Analyze this text and classify it as violent (2), extremist but no violence risk (1) or non-violent (0): {content}"
 
     def schema(self):
         class ViolentResult(BaseModel):
