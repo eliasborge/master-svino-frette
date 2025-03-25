@@ -21,7 +21,7 @@ grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCor
 grouped_messages = grouped_df
 
 ###TESTING###
-grouped_messages = grouped_messages.sample(n=20)
+grouped_messages = grouped_messages.sample(n=5)
 ###TESTING###
 
 mode="context"

@@ -20,7 +20,7 @@ grouped_messages = grouped_df
 
 mode="no-context"
 ###TESTING###
-grouped_messages = grouped_messages.sample(n=20)
+grouped_messages = grouped_messages.sample(n=5)
 ###TESTING###
 ### Due to the size of the topic threads, they haev been split into chunks ###
 

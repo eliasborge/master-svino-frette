@@ -9,7 +9,7 @@ model = "mistral-small"
 
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
 grouped_messages = grouped_df
-grouped_messages = grouped_messages.sample(n=20)
+grouped_messages = grouped_messages.sample(n=5)
 
 
 batch_agent = BatchAgent(model)
