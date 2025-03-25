@@ -23,14 +23,9 @@ class FramingAgent(Agent):
         If the message is deemed as Implicit, there should always be a related FramingTool. If the message is deemed as Explicit, the FramingTool should be empty.
         Always answer something. Either you give the answer or you indicate that you are unsure.
 
-        Example: 
-        Message: "Oh great, another Monday. Just what I needed."
-        Answer:""" + """ {'framing': {'framingStyle': 'Implicit', 'framingTool': 'sarcasm'}}
-
-        Example:
-        Message: "I love spending my weekends doing absolutely nothing."
-        Answer: {'framing': {'framingStyle': 'Explicit', 'framingTool': ''}}"""
-
+        Your response should be in the following format:
+        {'framing': {'framingStyle': '<Explicit or Implicit>', 'framingTool': '<related tool or empty>'}}
+        """
         )
 
     def prompt(self,content, context, mode):
