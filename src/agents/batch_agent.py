@@ -7,6 +7,7 @@ class BatchAgent(Agent):
 
     def system(self):
         return f"""
+        meldingstråd
         You are a Validation Agent. Your role is to verify and finalize the classification of social media posts, ensuring logical consistency and completeness across agent outputs. You must reason through your decisions before assigning a single label to each slot.
 
         **Classification Rules:**
