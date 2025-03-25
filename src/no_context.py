@@ -4,7 +4,7 @@ from .agents.otherness_agent import OthernessAgent
 from .agents.intent_agent import IntentAgent
 from .agents.message_validation_agent import MessageValidationAgent
 
-
+from datetime import datetime
 import pandas as pd
 
 model = "mistral-small"
@@ -20,7 +20,7 @@ grouped_messages = grouped_df
 
 mode="no-context"
 ###TESTING###
-grouped_messages = grouped_messages.sample(n=5)
+grouped_messages = grouped_messages.head(5)
 ###TESTING###
 ### Due to the size of the topic threads, they haev been split into chunks ###
 
@@ -77,6 +77,6 @@ for index,row in grouped_messages.iterrows():
 
         
 ### COLLECTION OF DATA ###
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 
-    collected_data.to_csv("data/collected_with_agents.csv",index=False)
-
+    collected_data.to_csv(f"data/testdata/test_results_from_idun/no_context/no_context_{timestamp}.csv",index=False)

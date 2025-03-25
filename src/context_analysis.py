@@ -21,7 +21,7 @@ grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCor
 grouped_messages = grouped_df
 
 ###TESTING###
-grouped_messages = grouped_messages.sample(n=5)
+grouped_messages = grouped_messages.head(5)
 ###TESTING###
 
 mode="context"
@@ -90,5 +90,5 @@ for index,row in grouped_messages.iterrows():
 ### COLLECTION OF DATA ###
 
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
-collected_data.to_csv(f"data/testdata/test_results_from_idun/context_analysis_{timestamp}.csv", index=False)
+collected_data.to_csv(f"data/testdata/test_results_from_idun/context/context_analysis_{timestamp}.csv", index=False)
 
