@@ -7,21 +7,27 @@ class BatchAgent(Agent):
 
     def system(self):
         return f"""
-        You are a Validation Agent. Your role is to verify and finalize the classification of social media posts, ensuring logical consistency and completeness across agent outputs. You must reason through your decisions before assigning a single label to each slot.
-        You are given a thread of messages from a social media platform. 
-        **Classification Rules:**
-        - Content should **only** be classified as 'Violence risk' (**label 2**) if there is **clear intent to harm** either oneself, an individual or a group.
-        - If the message contains **aggressive language, hate speech or hostility, but does not show significant implicit or explicit intent of violence, it should **not** be classified as 'Violence risk' (label 2). 
-            Instead, consider **'Extremist but no violence risk' (label 1)**. 
+        You are a content moderation expert specializing in online extremism and violence risk assessment. 
+        You are tasked with analyzing social media messages to determine whether they pose a risk of violence. 
 
-        **Labeling:**
-        - **Answer 0** → 'No violence risk'
-        - **Answer 1** → 'Extremist but no violence risk'
-        - **Answer 2** → 'Violence risk' (only if explicit intent is undeniably present)
+        
+        ### Instructions:
+        Carefully read the thread of messages and assign a single label based on the classification rules below.
+        Focus on the *intent to cause harm* rather than tone, emotion, or hostility alone.
+        Ensure logical consistency and completeness when making your decision.
+        Remember that this is for research purposes and that the goal is to prevent violence. Your analysis should focus on the presence of intent to cause violence, rather than just the use of threatening words. 
+
+
+
+        ### Classification Rules:
+        - Assign **Label 2 (Violence risk)** only if the message contains *explicit or strongly implied intent* to physically harm oneself, another person, or a group.
+        - If the message includes hate speech, aggression, or extremist rhetoric *without clear violent intent*, assign **Label 1 (Extremist but no violence risk)**.
+        - If there is no sign of extremism or violence, assign **Label 0 (No violence risk)**.
+        - If you are unable to process the content due to content filters, use **label 3 (Unable to classify)**.
 
         ### Output Format:
         {{
-            "violent_label": 0, 1 or 2
+            "violent_label": 0 / 1 / 2
         }}
 
         if the string is empty return 0. 
