@@ -9,8 +9,8 @@ from datetime import datetime
 
 import pandas as pd
 
-model = "mistral"
-# model = "mistral-nemo"
+# model = "mistral"
+model = "mistral-nemo"
 # model = "mistral-small"
 
 

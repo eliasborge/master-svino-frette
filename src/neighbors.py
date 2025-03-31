@@ -9,8 +9,8 @@ from .agents.message_validation_agent import MessageValidationAgent
 from datetime import datetime
 import pandas as pd
 
-model = "mistral"
-# model = "mistral-nemo"
+# model = "mistral"
+model = "mistral-nemo"
 # model = "mistral-small"
 
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
