@@ -80,4 +80,4 @@ for index,row in grouped_messages.iterrows():
 ### COLLECTION OF DATA ###
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 
-collected_data.to_csv(f"data/testdata/test_results_from_idun/no_context/no_context_{timestamp}.csv",index=False)
+collected_data.to_csv(f"data/testdata/test_results_from_idun/no_context/no_context_{model}_{timestamp}.csv",index=False)

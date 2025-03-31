@@ -39,5 +39,5 @@ for index, row in grouped_messages.iterrows():
 
     
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
-collected_data.to_csv(f"data/testdata/test_results_from_idun/batch/batch_{timestamp}.csv", index=False)
+collected_data.to_csv(f"data/testdata/test_results_from_idun/batch/batch_{model}_{timestamp}.csv", index=False)
 
