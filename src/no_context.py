@@ -7,8 +7,9 @@ from .agents.message_validation_agent import MessageValidationAgent
 from datetime import datetime
 import pandas as pd
 
-model = "mistral-small"
-# model = "gemma3:27b"
+model = "mistral"
+# model = "mistral-nemo"
+# model = "mistral-small"
 
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
@@ -77,6 +78,6 @@ for index,row in grouped_messages.iterrows():
 
         
 ### COLLECTION OF DATA ###
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 
-    collected_data.to_csv(f"data/testdata/test_results_from_idun/no_context/no_context_{timestamp}.csv",index=False)
+collected_data.to_csv(f"data/testdata/test_results_from_idun/no_context/no_context_{timestamp}.csv",index=False)
