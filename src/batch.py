@@ -17,6 +17,7 @@ batch_agent = BatchAgent(model)
 
 # Prepare DataFrame to store results
 collected_data = pd.DataFrame(columns=['video_num','document_id', 'violence_label'])
+print("starting batch processing")
 
 for index, row in grouped_messages.iterrows():
     content = row['content']
@@ -39,4 +40,5 @@ for index, row in grouped_messages.iterrows():
     
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 collected_data.to_csv(f"data/testdata/test_results_from_idun/batch/batch_{model}_{timestamp}.csv", index=False)
+print("Batch processing completed and results saved.")
 
