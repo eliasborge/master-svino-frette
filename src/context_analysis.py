@@ -33,6 +33,7 @@ intent_agent = IntentAgent(model)
 message_validation_agent = MessageValidationAgent(model)
 call_to_action_agent = CallToActionAgent(model)
 context_agent = ContextAgent(model)
+print("starting context processing")
 
 
 for index,row in grouped_messages.iterrows():
@@ -48,7 +49,6 @@ for index,row in grouped_messages.iterrows():
     # print(list_of_ids)
 
     context = context_agent.__call__(content)
-    print("Context: ",context)
     topicWasAnalysed = True
 
     for index,post in df[df['id'].isin(list_of_ids)].iterrows():
@@ -89,5 +89,6 @@ for index,row in grouped_messages.iterrows():
 ### COLLECTION OF DATA ###
 
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+print("Context processing completed and results saved.")
 collected_data.to_csv(f"data/testdata/test_results_from_idun/context/context_analysis_{model}_{timestamp}.csv", index=False)
 
