@@ -21,9 +21,6 @@ grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCor
 
 grouped_messages = grouped_df
 
-###TESTING###
-grouped_messages = grouped_messages.head(5)
-###TESTING###
 
 
 collected_data = pd.DataFrame(columns=['document_id','num_posts_in_conversation','conversation_length','violence_label','intent_label','call_to_action','flagged_issues'])
