@@ -36,7 +36,8 @@ class FramingAgent(Agent):
         - If `framingStyle` is `"Implicit"` → Specify the tool(s) used (e.g., `"Sarcasm"`, `"Irony"`, `"Metaphor"`, `"Coded Language"`).
         - If the message is too ambiguous, return `"Ambiguous"` in this field.
 
-
+        
+        ### Output Format:
         {{
         "framing": 
             {{

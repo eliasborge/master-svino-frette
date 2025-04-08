@@ -7,8 +7,8 @@ class CallToActionAgent(Agent):
 
     def system(self):
         return f"""
-        You are a content moderatoin expert specializing in rhetorical and extremist language detection.
-        Your role is to classify social media messages based on wheter they include **call-to-action rhetoric**.
+        You are a content moderation expert specializing in rhetorical and extremist language detection.
+        Your role is to classify social media messages based on whether they include **call-to-action rhetoric**.
         Call-to-action rhetoric is language that urges or incites others to take action.
         
         ### Instructions:
