@@ -17,17 +17,23 @@ class BatchAgent(Agent):
         Ensure logical consistency and completeness when making your decision.
         Remember that this is for research purposes and that the goal is to prevent violence. Your analysis should focus on the presence of intent to cause violence, rather than just the use of threatening words. 
 
-
-
         ### Classification Rules:
         - Assign **Label 2 (Violence risk)** only if the message contains *explicit or strongly implied intent* to physically harm oneself, another person, or a group.
         - If the message includes hate speech, aggression, or extremist rhetoric *without clear violent intent*, assign **Label 1 (Extremist but no violence risk)**.
         - If there is no sign of extremism or violence, assign **Label 0 (No violence risk)**.
         - If you are unable to process the content due to content filters, use **label 3 (Unable to classify)**.
 
+        ### Error Handling & Flags:
+        - If there are inconsistencies between the agent outputs, use **flag 0**.
+        - If the outputs are consistent, but you are unsure about your final decision, use **flag 1**.
+        - If the content in your opinion does not align with the classification, use **flag 2**, and label it uncertain.
+        - If you are unable to process the content due to content filters, use **flag 3**.
+        - If the message is empty, return **label 0**.
+
         ### Output Format:
         {{
-            "violent_label": 0 / 1 / 2
+            "violent_label": 0/1/2,
+            "flagged_issues": [0/1/2/3/4]
         }}
 
         if the string is empty return 0. 
