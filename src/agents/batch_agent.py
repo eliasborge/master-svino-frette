@@ -30,6 +30,8 @@ class BatchAgent(Agent):
         - If you are unable to process the content due to content filters, use **flag 3**.
         - If the message is empty, return **label 0**.
 
+        You should always return a JSON object with the following output format:    
+
         ### Output Format:
         {{
             "violent_label": 0/1/2,
