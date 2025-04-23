@@ -28,7 +28,6 @@ for index, row in grouped_messages.iterrows():
     for i in content_list:
         # print(i)
         result = batch_agent.__call__(i)
-        print(result)
         results.append(result)
 
     for i, flag in enumerate(results):
