@@ -11,7 +11,6 @@ model = "mistral-small"
 
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
 grouped_messages = grouped_df
-grouped_messages = grouped_df.head(2)
 
 
 batch_agent = BatchAgent(model)
@@ -23,7 +22,7 @@ print("starting batch processing")
 for index, row in grouped_messages.iterrows():
     content = row['content']
     list_of_ids:list = row['id'].split(", ")
-
+    print(f"Processing row {index + 1} of {len(grouped_messages)}...")  
     content_list = content.split("###---###")   
     results = []
     for i in content_list:
