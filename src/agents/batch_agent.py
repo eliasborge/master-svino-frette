@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 from .agent import Agent
 
 class BatchAgent(Agent):
@@ -46,6 +47,7 @@ class BatchAgent(Agent):
     def schema(self):
         class ViolentResult(BaseModel):
             violent_label: int
+            flagged_issues: List[int]
 
         class ViolentSchema(BaseModel):
             result: ViolentResult
@@ -60,4 +62,6 @@ class BatchAgent(Agent):
             model=self.model
         )
         if output:
-            return output[output_key]['violent_label']
+            return {
+                output[output_key]
+            }
