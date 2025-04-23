@@ -62,6 +62,5 @@ class BatchAgent(Agent):
             model=self.model
         )
         if output:
-            return {
-                output[output_key]
-            }
+            return output[output_key]
+            
