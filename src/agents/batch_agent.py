@@ -38,11 +38,10 @@ class BatchAgent(Agent):
             "flagged_issues": [0/1/2/3/4]
         }}
 
-        if the string is empty return 0. 
         """
 
     def prompt(self, content):
-        return f"Analyze this message and classify it as violent (2), extremist but no violence risk (1) or non-violent (0): {content}"
+        return f"Analyze this message and classify it as violent (2), extremist but no violence risk (1) or non-violent (0) and give it an error handling rate: {content}"
 
     def schema(self):
         class ViolentResult(BaseModel):
