@@ -24,13 +24,12 @@ for index, row in grouped_messages.iterrows():
     content = row['content']
     list_of_ids:list = row['id'].split(", ")
 
-    content_list = content.split("###---###")
-    print(f"Processing row {index + 1} of {len(grouped_messages)}")
+    content_list = content.split("###---###")   
     results = []
     for i in content_list:
         # print(i)
         result = batch_agent.__call__(i)
-        # print(result)
+        print(result)
         results.append(result)
 
     for i, flag in enumerate(results):
