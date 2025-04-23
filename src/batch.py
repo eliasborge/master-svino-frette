@@ -25,7 +25,7 @@ for index, row in grouped_messages.iterrows():
     list_of_ids:list = row['id'].split(", ")
 
     content_list = content.split("###---###")
-    # print(content_list)
+    print(f"Processing row {index + 1} of {len(grouped_messages)}")
     results = []
     for i in content_list:
         # print(i)
