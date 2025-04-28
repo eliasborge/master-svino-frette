@@ -8,10 +8,21 @@ from .agents.message_validation_agent import MessageValidationAgent
 
 from datetime import datetime
 import pandas as pd
+import tracemalloc
+import time
+import psutil
+
 
 # model = "mistral"
 # model = "mistral-nemo"
 model = "mistral-small"
+
+### Logging
+timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+start_time = time.time()
+tracemalloc.start()
+process = psutil.Process()
+####
 
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
@@ -24,6 +35,11 @@ grouped_messages = grouped_df
 
 
 collected_data = pd.DataFrame(columns=['document_id','num_posts_in_conversation','conversation_length','violence_label','intent_label','call_to_action','flagged_issues'])
+efficiency_data = pd.DataFrame(columns=[
+    'row', 'row_duration_sec',
+    'memory_used_MB', 'peak_memory_MB',
+    'cpu_user_time_sec', 'cpu_system_time_sec', 'cpu_total_time_sec', 'total_latency_sec'
+])
 
 otherness_agent = OthernessAgent(model)
 framing_agent = FramingAgent(model)
@@ -35,6 +51,10 @@ context_agent = ContextAgent(model)
 
 mode = "neighbor"
 for index,row in grouped_messages.iterrows():
+    row_start_time = time.time()
+    cpu_start = process.cpu_times()
+    row_total_latency = 0
+    print(f"Processing row {index + 1} of {len(grouped_messages)}...")
 
     content_with_ids = df
     raw_content = row['content']
@@ -74,20 +94,30 @@ for index,row in grouped_messages.iterrows():
         content = f"History before\n{context_before}\nTHIS IS THE MESSAGE YOU SHOULD CLASSIFY\n{specific_post_content}\nHistory After\n{context_after}"
         print(content)
 
+        start_agent_time = time.time()
         specific_post_otherness = otherness_agent.__call__(specific_post_content, context = content,  mode=mode)
-        print(specific_post_otherness)
+        latency = time.time() - start_agent_time
+        row_total_latency += latency
 
+        start_agent_time = time.time()
         specific_post_framing = framing_agent.__call__(specific_post_content,context=content, mode=mode)
-        print(specific_post_framing)
+        latency = time.time() - start_agent_time
+        row_total_latency += latency
 
+        start_agent_time = time.time()
         specific_post_intent = intent_agent.__call__(specific_post_content, specific_post_otherness['targetGroup'], specific_post_framing, context=content,mode=mode)
-        print(specific_post_intent)
+        latency = time.time() - start_agent_time
+        row_total_latency += latency
 
+        start_agent_time = time.time()
         specific_post_call_to_action = call_to_action_agent.__call__(specific_post_content, specific_post_otherness['targetGroup'], specific_post_framing, context=content, mode=mode)
-        print(specific_post_call_to_action)
+        latency = time.time() - start_agent_time
+        row_total_latency += latency
 
+        start_agent_time = time.time()
         specific_post_validation = message_validation_agent.__call__(specific_post_content, otherness_boolean = specific_post_otherness['othernessBoolean'], target_group = specific_post_otherness['targetGroup'], framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent, call_to_action=specific_post_call_to_action, context=content, mode=mode)
-        print(specific_post_validation)
+        latency = time.time() - start_agent_time
+        row_total_latency += latency
 
         new_row = {'document_id': post['id'], 'num_posts_in_conversation': num_posts_in_conversation, 
         'conversation_length': conversation_length,  
@@ -98,9 +128,34 @@ for index,row in grouped_messages.iterrows():
         new_row_df = pd.DataFrame([new_row])
         collected_data = pd.concat([collected_data, new_row_df], ignore_index=True)
 
+    cpu_end = process.cpu_times()
+    cpu_user = cpu_end.user - cpu_start.user
+    cpu_system = cpu_end.system - cpu_start.system
+    cpu_total = cpu_user + cpu_system
+
+    row_duration = time.time() - row_start_time
+    current, peak = tracemalloc.get_traced_memory()
+    mem_used = current / 1e6
+    peak_mem = peak / 1e6
+
+    efficiency_data_row = pd.concat([
+        efficiency_data,
+        pd.DataFrame([{
+            'row': index + 1,
+            'row_duration_sec': row_duration,
+            'memory_used_MB': mem_used,
+            'peak_memory_MB': peak_mem,
+            'cpu_user_time_sec': cpu_user,
+            'cpu_system_time_sec': cpu_system,
+            'cpu_total_time_sec': cpu_total,
+            'total_latency_sec': row_total_latency,
+        }])
+    ], ignore_index=True)
+
         
 ### COLLECTION OF DATA ###
 
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 collected_data.to_csv(f"data/testdata/test_results_from_idun/neighbors/neighbor_{model}_{timestamp}.csv", index=False)
+efficiency_data.to_csv(f"data/testdata/test_results_from_idun/neighbors/neighbor_efficiency_{model}_{timestamp}.csv", index=False)
 
