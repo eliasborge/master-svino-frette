@@ -19,7 +19,7 @@ process = psutil.Process()
 ####
 
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
-grouped_messages = grouped_df
+grouped_messages = grouped_df.head(5)
 
 
 solo_agent = SoloAgent(model)
