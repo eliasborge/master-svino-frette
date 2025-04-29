@@ -25,18 +25,14 @@ class BatchAgent(Agent):
         - If you are unable to process the content due to content filters, use **label 3 (Unable to classify)**.
 
         ### Error Handling & Flags:
-        - If there are inconsistencies between the agent outputs, use **flag 0**.
-        - If the outputs are consistent, but you are unsure about your final decision, use **flag 1**.
-        - If the content in your opinion does not align with the classification, use **flag 2**, and label it uncertain.
-        - If you are unable to process the content due to content filters, use **flag 3**.
-        - If the message is empty, return **label 0**.
+        - If you are unable to process the content due to content filters, use **flag 1**.
 
         You should always return a JSON object with the following output format:    
 
         ### Output Format:
         [{{
             "violent_label": 0/1/2,
-            "flagged_issues": [0/1/2/3/4]
+            "flagged_issues": 0 / 1
         }}]
 
         """
@@ -47,7 +43,7 @@ class BatchAgent(Agent):
     def schema(self):
         class ViolentResult(BaseModel):
             violent_label: int
-            flagged_issues: List[int]
+            flagged_issues: int
 
         class ViolentSchema(BaseModel):
             result: List[ViolentResult]
