@@ -1,5 +1,5 @@
 
-from .agents.batch_agent import BatchAgent
+from .agents.solo_agent import SoloAgent
 from datetime import datetime
 import pandas as pd
 import tracemalloc
@@ -19,10 +19,10 @@ process = psutil.Process()
 ####
 
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
-grouped_messages = grouped_df
+grouped_messages = grouped_df.head(5)
 
 
-batch_agent = BatchAgent(model)
+solo_agent = SoloAgent(model)
 
 # Prepare DataFrame to store results
 collected_data = pd.DataFrame(columns=['video_num','document_id', 'violence_label'])
@@ -33,7 +33,7 @@ efficiency_data = pd.DataFrame(columns=[
 ])
 
 
-print("starting batch processing")
+print("starting solo processing")
 
 for index, row in grouped_messages.iterrows():
     row_start_time = time.time()
@@ -44,23 +44,9 @@ for index, row in grouped_messages.iterrows():
     content_list = content.split("###---###")   
     results = []
 
-    BATCH_SIZE = 25 
-
-    for i in range(0, len(content_list), BATCH_SIZE):
-        chunk = content_list[i:i+BATCH_SIZE]
-        chunk_text = "\nNew post:\n".join(chunk)
-        result = batch_agent.__call__(chunk_text)
-        
-        # Ensure result is a list
-        if not isinstance(result, list):
-            result = [result]
-        results.extend(result)  # Add all instances from the batch to the results
-
-    # for i in content_list:
-    #     result = batch_agent.__call__(i)
-    #     results.append(result)
-
-    print(results)
+    for i in content_list:
+        result = solo_agent.__call__(i)
+        results.append(result)
 
     for i, flag in enumerate(results):
         new_row = {'video_num': list_of_ids[i].split('_')[0],'document_id':list_of_ids[i], 'violence_label': flag['violent_label'], 'flagged_issues': flag['flagged_issues']}
@@ -92,7 +78,7 @@ for index, row in grouped_messages.iterrows():
 
     
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
-collected_data.to_csv(f"data/testdata/test_results_from_idun/batch/batch_{model}_{timestamp}.csv", index=False)
-efficiency_data.to_csv(f"data/testdata/test_results_from_idun/batch/batch_efficiency_{model}_{timestamp}.csv", index=False)
-print("Batch processing completed and results saved.")
+collected_data.to_csv(f"data/testdata/test_results_from_idun/solo/solo{model}_{timestamp}.csv", index=False)
+efficiency_data.to_csv(f"data/testdata/test_results_from_idun/solo/solo_efficiency{model}_{timestamp}.csv", index=False)
+print("solo processing completed and results saved.")
 
