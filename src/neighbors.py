@@ -76,7 +76,7 @@ for index,row in grouped_messages.iterrows():
             print(f"Warning: Post ID {post_id} not found in list_of_ids")
             continue
 
-        neighbors_window = 2  # Number of neighboring posts before and after
+        neighbors_window = 3  # Number of neighboring posts before and after
 
         post_index = list_of_ids.index(post_id)
 
