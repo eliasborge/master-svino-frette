@@ -79,6 +79,6 @@ for index, row in grouped_messages.iterrows():
     
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 collected_data.to_csv(f"data/testdata/test_results_from_idun/solo/solo{model}_{timestamp}.csv", index=False)
-efficiency_data.to_csv(f"data/testdata/test_results_from_idun/solo/solo{model}_{timestamp}.csv", index=False)
+efficiency_data.to_csv(f"data/testdata/test_results_from_idun/solo/solo_efficiency{model}_{timestamp}.csv", index=False)
 print("solo processing completed and results saved.")
 
