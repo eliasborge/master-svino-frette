@@ -44,7 +44,7 @@ for index, row in grouped_messages.iterrows():
     content_list = content.split("###---###")   
     results = []
 
-    BATCH_SIZE = 10 
+    BATCH_SIZE = 10  
 
     for i in range(0, len(content_list), BATCH_SIZE):
         chunk = content_list[i:i+BATCH_SIZE]
@@ -55,7 +55,7 @@ for index, row in grouped_messages.iterrows():
         # Ensure result is a list
         if not isinstance(result, list):
             result = [result]
-        results.extend(result)  # Add all instances from the batch to the results
+        results.append(result)  # Add all instances from the batch to the results
 
     # for i in content_list:
     #     result = batch_agent.__call__(i)
