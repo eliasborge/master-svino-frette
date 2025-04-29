@@ -44,10 +44,11 @@ for index, row in grouped_messages.iterrows():
     content_list = content.split("###---###")   
     results = []
 
-    BATCH_SIZE = 25 
+    BATCH_SIZE = 10 
 
     for i in range(0, len(content_list), BATCH_SIZE):
         chunk = content_list[i:i+BATCH_SIZE]
+        print("Chunk_size ", len(chunk))
         chunk_text = "\nNew post:\n".join(chunk)
         result = batch_agent.__call__(chunk_text)
         
