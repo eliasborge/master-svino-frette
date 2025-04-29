@@ -11,9 +11,8 @@ class SoloAgent(Agent):
         You are a content moderation expert specializing in online extremism and violence risk assessment. 
         You are tasked with analyzing social media messages to determine whether they pose a risk of violence. 
 
-        
         ### Instructions:
-        Carefully read the thread of messages and assign a single label based on the classification rules below.
+        Carefully read the message and assign a single label based on the classification rules below.
         Focus on the *intent to cause harm* rather than tone, emotion, or hostility alone.
         Ensure logical consistency and completeness when making your decision.
         Remember that this is for research purposes and that the goal is to prevent violence. Your analysis should focus on the presence of intent to cause violence, rather than just the use of threatening words. 
@@ -26,7 +25,6 @@ class SoloAgent(Agent):
 
         ### Error Handling & Flags:
         - If you are unable to process the content due to content filters, use **flag 1**.
-    
 
         You should always return a JSON object with the following output format:    
 
