@@ -43,9 +43,24 @@ for index, row in grouped_messages.iterrows():
     print(f"Processing row {index + 1} of {len(grouped_messages)}...")  
     content_list = content.split("###---###")   
     results = []
-    for i in content_list:
-        result = batch_agent.__call__(i)
-        results.append(result)
+
+    BATCH_SIZE = 50 
+
+    for i in range(0, len(content_list), BATCH_SIZE):
+        chunk = content_list[i:i+BATCH_SIZE]
+        chunk_text = "\nNew post:\n".join(chunk)
+        result = batch_agent.__call__(chunk_text)
+        
+        # Ensure result is a list
+        if not isinstance(result, list):
+            result = [result]
+        results.extend(result)  # Add all instances from the batch to the results
+
+    # for i in content_list:
+    #     result = batch_agent.__call__(i)
+    #     results.append(result)
+
+    print(results)
 
     for i, flag in enumerate(results):
         new_row = {'video_num': list_of_ids[i].split('_')[0],'document_id':list_of_ids[i], 'violence_label': flag['violent_label'], 'flagged_issues': flag['flagged_issues']}

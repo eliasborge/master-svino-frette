@@ -9,11 +9,11 @@ class BatchAgent(Agent):
     def system(self):
         return f"""
         You are a content moderation expert specializing in online extremism and violence risk assessment. 
-        You are tasked with analyzing social media messages to determine whether they pose a risk of violence. 
+        You are tasked with analyzing 50 social media messages to determine whether they pose a risk of violence. 
 
         
         ### Instructions:
-        Carefully read the thread of messages and assign a single label based on the classification rules below.
+        Carefully read the thread of messages and assign a single label per message based on the classification rules below.
         Focus on the *intent to cause harm* rather than tone, emotion, or hostility alone.
         Ensure logical consistency and completeness when making your decision.
         Remember that this is for research purposes and that the goal is to prevent violence. Your analysis should focus on the presence of intent to cause violence, rather than just the use of threatening words. 
@@ -34,15 +34,15 @@ class BatchAgent(Agent):
         You should always return a JSON object with the following output format:    
 
         ### Output Format:
-        {{
+        [{{
             "violent_label": 0/1/2,
             "flagged_issues": [0/1/2/3/4]
-        }}
+        }}]
 
         """
 
     def prompt(self, content):
-        return f"Analyze this message and classify it as violent (2), extremist but no violence risk (1) or non-violent (0) and give it an error handling rate: {content}"
+        return f"Analyze these messages and classify them as violent (2), extremist but no violence risk (1) or non-violent (0) and give it an error handling rate:\n {content}"
 
     def schema(self):
         class ViolentResult(BaseModel):
@@ -50,7 +50,7 @@ class BatchAgent(Agent):
             flagged_issues: List[int]
 
         class ViolentSchema(BaseModel):
-            result: ViolentResult
+            result: List[ViolentResult]
 
         return ViolentSchema.model_json_schema()
 
