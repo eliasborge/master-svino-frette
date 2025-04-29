@@ -30,7 +30,7 @@ grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCor
 
 ### Due to the size of the topic threads, they haev been split into chunks ###
 
-grouped_messages = grouped_df.head(2)
+grouped_messages = grouped_df.head(5)
 
 
 
@@ -76,23 +76,25 @@ for index,row in grouped_messages.iterrows():
             print(f"Warning: Post ID {post_id} not found in list_of_ids")
             continue
 
+        neighbors_window = 2  # Number of neighboring posts before and after
+
         post_index = list_of_ids.index(post_id)
 
-        # Get context messages (two before and two after) safely
+        # Get context messages before the current post
         context_before = "\n".join(
-            df[df['id'] == list_of_ids[j]]['content'].values[0] 
+            df[df['id'] == list_of_ids[j]]['content'].values[0]
             if not df[df['id'] == list_of_ids[j]].empty else "[MISSING]"
-            for j in range(max(0, post_index - 2), post_index)
+            for j in range(max(0, post_index - neighbors_window), post_index)
         )
 
+        # Get context messages after the current post
         context_after = "\n".join(
-            df[df['id'] == list_of_ids[j]]['content'].values[0] 
+            df[df['id'] == list_of_ids[j]]['content'].values[0]
             if not df[df['id'] == list_of_ids[j]].empty else "[MISSING]"
-            for j in range(post_index + 1, min(len(list_of_ids), post_index + 3))
+            for j in range(post_index + 1, min(len(list_of_ids), post_index + 1 + neighbors_window))
         )
 
         content = f"History before\n{context_before}\nTHIS IS THE MESSAGE YOU SHOULD CLASSIFY\n{specific_post_content}\nHistory After\n{context_after}"
-        print(content)
 
         start_agent_time = time.time()
         specific_post_otherness = otherness_agent.__call__(specific_post_content, context = content,  mode=mode)
@@ -138,7 +140,7 @@ for index,row in grouped_messages.iterrows():
     mem_used = current / 1e6
     peak_mem = peak / 1e6
 
-    efficiency_data_row = pd.concat([
+    efficiency_data = pd.concat([
         efficiency_data,
         pd.DataFrame([{
             'row': index + 1,
