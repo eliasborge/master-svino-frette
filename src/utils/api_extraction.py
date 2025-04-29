@@ -35,6 +35,7 @@ def generate(
         stream=False,
     )
     res = response.message.content
+    print(res)
     if parse and schema:
         try:
             res = loads(res)
