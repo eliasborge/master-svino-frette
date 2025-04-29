@@ -60,7 +60,7 @@ for index, row in grouped_messages.iterrows():
     #     result = batch_agent.__call__(i)
     #     results.append(result)
 
-    print(results)
+    print("ACTUAL RESULTS:" ,results)
 
     for i, flag in enumerate(results):
         new_row = {'video_num': list_of_ids[i].split('_')[0],'document_id':list_of_ids[i], 'violence_label': flag['violent_label'], 'flagged_issues': flag['flagged_issues']}
