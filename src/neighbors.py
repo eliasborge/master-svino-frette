@@ -76,19 +76,22 @@ for index,row in grouped_messages.iterrows():
             print(f"Warning: Post ID {post_id} not found in list_of_ids")
             continue
 
+        neighbors_window = 1  # Number of neighboring posts before and after
+
         post_index = list_of_ids.index(post_id)
 
-        # Get context messages (two before and two after) safely
+        # Get context messages before the current post
         context_before = "\n".join(
-            df[df['id'] == list_of_ids[j]]['content'].values[0] 
+            df[df['id'] == list_of_ids[j]]['content'].values[0]
             if not df[df['id'] == list_of_ids[j]].empty else "[MISSING]"
-            for j in range(max(0, post_index - 2), post_index)
+            for j in range(max(0, post_index - neighbors_window), post_index)
         )
 
+        # Get context messages after the current post
         context_after = "\n".join(
-            df[df['id'] == list_of_ids[j]]['content'].values[0] 
+            df[df['id'] == list_of_ids[j]]['content'].values[0]
             if not df[df['id'] == list_of_ids[j]].empty else "[MISSING]"
-            for j in range(post_index + 1, min(len(list_of_ids), post_index + 3))
+            for j in range(post_index + 1, min(len(list_of_ids), post_index + 1 + neighbors_window))
         )
 
         content = f"History before\n{context_before}\nTHIS IS THE MESSAGE YOU SHOULD CLASSIFY\n{specific_post_content}\nHistory After\n{context_after}"
