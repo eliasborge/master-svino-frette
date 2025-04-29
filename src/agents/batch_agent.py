@@ -9,7 +9,7 @@ class BatchAgent(Agent):
     def system(self):
         return f"""
         You are a content moderation expert specializing in online extremism and violence risk assessment. 
-        You are tasked with analyzing 50 social media messages to determine whether they pose a risk of violence. 
+        You are tasked with analyzing 25 social media messages to determine whether they pose a risk of violence. 
 
         
         ### Instructions:

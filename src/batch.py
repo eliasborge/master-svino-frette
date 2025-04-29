@@ -44,7 +44,7 @@ for index, row in grouped_messages.iterrows():
     content_list = content.split("###---###")   
     results = []
 
-    BATCH_SIZE = 50 
+    BATCH_SIZE = 25 
 
     for i in range(0, len(content_list), BATCH_SIZE):
         chunk = content_list[i:i+BATCH_SIZE]
