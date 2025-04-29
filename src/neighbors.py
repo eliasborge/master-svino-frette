@@ -140,19 +140,19 @@ for index,row in grouped_messages.iterrows():
     mem_used = current / 1e6
     peak_mem = peak / 1e6
 
-    efficiency_data = pd.concat([
-        efficiency_data,
-        pd.DataFrame([{
-            'row': index + 1,
-            'row_duration_sec': row_duration,
-            'memory_used_MB': mem_used,
-            'peak_memory_MB': peak_mem,
-            'cpu_user_time_sec': cpu_user,
-            'cpu_system_time_sec': cpu_system,
-            'cpu_total_time_sec': cpu_total,
-            'total_latency_sec': row_total_latency,
-        }])
-    ], ignore_index=True)
+    new_row_efficiency = {
+        'row': index + 1,
+        'row_duration_sec': row_duration,
+        'memory_used_MB': mem_used,
+        'peak_memory_MB': peak_mem,
+        'cpu_user_time_sec': cpu_user,
+        'cpu_system_time_sec': cpu_system,
+        'cpu_total_time_sec': cpu_total,
+        'total_latency_sec': row_total_latency,
+    }
+
+    new_row_efficiency_df = pd.DataFrame([new_row_efficiency])
+    efficiency_data = pd.concat([efficiency_data, new_row_efficiency_df], ignore_index=True)
 
         
 ### COLLECTION OF DATA ###
