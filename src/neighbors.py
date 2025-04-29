@@ -30,7 +30,7 @@ grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCor
 
 ### Due to the size of the topic threads, they haev been split into chunks ###
 
-grouped_messages = grouped_df.head(2)
+grouped_messages = grouped_df.head(5)
 
 
 
@@ -95,7 +95,6 @@ for index,row in grouped_messages.iterrows():
         )
 
         content = f"History before\n{context_before}\nTHIS IS THE MESSAGE YOU SHOULD CLASSIFY\n{specific_post_content}\nHistory After\n{context_after}"
-        print(content)
 
         start_agent_time = time.time()
         specific_post_otherness = otherness_agent.__call__(specific_post_content, context = content,  mode=mode)
