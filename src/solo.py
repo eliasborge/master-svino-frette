@@ -8,8 +8,8 @@ import psutil
 
 
 # model = "mistral"
-# model = "mistral-nemo"
-model = "mistral-small"
+model = "mistral-nemo"
+# model = "mistral-small"
 
 ### Logging
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
