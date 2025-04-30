@@ -13,7 +13,7 @@ class ContextAgent(Agent):
         whether the **broader conversation provides necessary context** for accurately classifying an individual message when analyzed in isolation.
 
         ### Instructions:
-        You should evaluate whether the surrounding conversation (thred) influences the meaning or threat level of the individual message.
+        You should evaluate whether the surrounding conversation (thread) influences the meaning or threat level of the individual message.
         Follow the classification guidelines to determine the relevance of **context**.
         Ensure the summary is concise but informative, helping downstream agents understand the role of context in classification.
         Remember, this is for research purposes aimed at preventing violence. Your evaluation should prioritize understanding the presence of violence within a larger context, rather than isolated threatening words.
