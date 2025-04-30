@@ -14,8 +14,8 @@ import psutil
 
 
 # model = "mistral"
-# model = "mistral-nemo"
-model = "mistral-small"
+model = "mistral-nemo"
+# model = "mistral-small"
 
 ### Logging
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
@@ -30,7 +30,7 @@ grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCor
 
 ### Due to the size of the topic threads, they haev been split into chunks ###
 
-grouped_messages = grouped_df
+grouped_messages = grouped_df.head(100)
 
 
 
@@ -158,6 +158,6 @@ for index,row in grouped_messages.iterrows():
 ### COLLECTION OF DATA ###
 
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
-collected_data.to_csv(f"data/testdata/test_results_from_idun/neighbors/neighbor_{model}_{timestamp}.csv", index=False)
-efficiency_data.to_csv(f"data/testdata/test_results_from_idun/neighbors/neighbor_efficiency_{model}_{timestamp}.csv", index=False)
+collected_data.to_csv(f"data/testdata/test_results_from_idun/neighbors/neighbor_{model}_100first.csv", index=False)
+efficiency_data.to_csv(f"data/testdata/test_results_from_idun/neighbors/neighbor_efficiency_{model}_100first.csv", index=False)
 
