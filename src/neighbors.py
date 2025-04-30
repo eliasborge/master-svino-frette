@@ -30,7 +30,7 @@ grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCor
 
 ### Due to the size of the topic threads, they haev been split into chunks ###
 
-grouped_messages = grouped_df.head(5)
+grouped_messages = grouped_df
 
 
 
@@ -76,7 +76,7 @@ for index,row in grouped_messages.iterrows():
             print(f"Warning: Post ID {post_id} not found in list_of_ids")
             continue
 
-        neighbors_window = 3  # Number of neighboring posts before and after
+        neighbors_window = 1  # Number of neighboring posts before and after
 
         post_index = list_of_ids.index(post_id)
 
