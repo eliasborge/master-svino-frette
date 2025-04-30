@@ -39,7 +39,6 @@ class MessageValidationAgent(Agent):
         {{
             "validation": {{
                 "validated_label": "0/1/2",
-                "validation_status": "success/uncertain/error",
                 "flagged_issues": [0/1/2/3/4]
             }}
         }}
