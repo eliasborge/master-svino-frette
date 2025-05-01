@@ -13,15 +13,13 @@ import time
 import psutil
 
 
-model = "mistral"
-#model = "mistral-nemo"
+# model = "mistral"
+model = "mistral-nemo"
 # model = "mistral-small"
 
 ### Logging
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 start_time = time.time()
-tracemalloc.start()
-process = psutil.Process()
 ####
 
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
@@ -34,12 +32,7 @@ grouped_messages = grouped_df
 
 
 
-collected_data = pd.DataFrame(columns=['document_id','num_posts_in_conversation','conversation_length','violence_label','intent_label','call_to_action','flagged_issues'])
-efficiency_data = pd.DataFrame(columns=[
-    'row', 'row_duration_sec',
-    'memory_used_MB', 'peak_memory_MB',
-    'cpu_user_time_sec', 'cpu_system_time_sec', 'cpu_total_time_sec', 'total_latency_sec'
-])
+collected_data = pd.DataFrame(columns=['document_id','num_posts_in_conversation','conversation_length','violence_label','intent_label','call_to_action','flagged_issues', 'row_duration_sec'])
 
 otherness_agent = OthernessAgent(model)
 framing_agent = FramingAgent(model)
@@ -52,8 +45,6 @@ context_agent = ContextAgent(model)
 mode = "neighbor"
 for index,row in grouped_messages.iterrows():
     row_start_time = time.time()
-    cpu_start = process.cpu_times()
-    row_total_latency = 0
     print(f"Processing row {index + 1} of {len(grouped_messages)}...")
 
     content_with_ids = df
@@ -105,44 +96,26 @@ for index,row in grouped_messages.iterrows():
 
             specific_post_classification = classification_agent.__call__(specific_post_content, framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent_of_violence, call_to_action=specific_post_call_to_action, context=content, mode=mode)
 
+            row_duration = time.time() - row_start_time
+
             new_row = {'document_id': post['id'], 'num_posts_in_conversation': num_posts_in_conversation, 
             'conversation_length': conversation_length,  
             'violence_label': specific_post_classification['label'], 'intent_label': specific_post_intent_of_violence, 
-            'call_to_action': specific_post_call_to_action, 'flagged_issues': specific_post_classification['flagged_issues']}
+            'call_to_action': specific_post_call_to_action, 'flagged_issues': specific_post_classification['flagged_issues'], 
+            'row_duration_sec': row_duration}
 
         except Exception as e:
+            row_duration = time.time() - row_start_time
             new_row = {'document_id': post['id'], 'num_posts_in_conversation': num_posts_in_conversation, 
             'conversation_length': conversation_length,  
             'violence_label': -1, 'intent_label': "None", 
-            'call_to_action': "None", 'flagged_issues': "None"}
+            'call_to_action': "None", 'flagged_issues': "None", }
 
         # Convert new_row to a DataFrame and concatenate with the existing DataFrame
         new_row_df = pd.DataFrame([new_row])
         collected_data = pd.concat([collected_data, new_row_df], ignore_index=True)
 
-    cpu_end = process.cpu_times()
-    cpu_user = cpu_end.user - cpu_start.user
-    cpu_system = cpu_end.system - cpu_start.system
-    cpu_total = cpu_user + cpu_system
 
-    row_duration = time.time() - row_start_time
-    current, peak = tracemalloc.get_traced_memory()
-    mem_used = current / 1e6
-    peak_mem = peak / 1e6
-
-    new_row_efficiency = {
-        'row': index + 1,
-        'row_duration_sec': row_duration,
-        'memory_used_MB': mem_used,
-        'peak_memory_MB': peak_mem,
-        'cpu_user_time_sec': cpu_user,
-        'cpu_system_time_sec': cpu_system,
-        'cpu_total_time_sec': cpu_total,
-        'total_latency_sec': row_total_latency,
-    }
-
-    new_row_efficiency_df = pd.DataFrame([new_row_efficiency])
-    efficiency_data = pd.concat([efficiency_data, new_row_efficiency_df], ignore_index=True)
 
         
 ### COLLECTION OF DATA ###
