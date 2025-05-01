@@ -23,7 +23,7 @@ grouped_messages = grouped_df
 solo_agent = SoloAgent(model)
 
 # Prepare DataFrame to store results
-collected_data = pd.DataFrame(columns=['video_num','document_id', 'violence_label', 'flagged_issue', 'row_duration_sec'])
+collected_data = pd.DataFrame(columns=['video_num','document_id', 'violence_label', 'row_duration_sec'])
 
 
 print("starting solo processing")
