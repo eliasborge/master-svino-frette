@@ -52,20 +52,25 @@ for index,row in grouped_messages.iterrows():
 
     for index,post in df[df['id'].isin(list_of_ids)].iterrows():
         specific_post_content = post['content']
+        
+        try:
+            specific_post_framing = framing_agent.__call__(specific_post_content, context,mode=mode)
+            specific_post_intent = intent_agent.__call__(specific_post_content, specific_post_framing, context,mode=mode)
+            specific_post_call_to_action = specific_post_intent['call_to_action']
+            specific_post_intent_of_violence = specific_post_intent['intent_of_violence']
 
-        specific_post_framing = framing_agent.__call__(specific_post_content, context,mode=mode)
-    
+            specific_post_classification = classification_agent.__call__(specific_post_content, framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent_of_violence, call_to_action=specific_post_call_to_action, context=context,mode=mode)
 
-        specific_post_intent = intent_agent.__call__(specific_post_content, specific_post_framing, context,mode=mode)
-        specific_post_call_to_action = specific_post_intent['call_to_action']
-        specific_post_intent_of_violence = specific_post_intent['intent_of_violence']
-
-        specific_post_classification = classification_agent.__call__(specific_post_content, framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent_of_violence, call_to_action=specific_post_call_to_action, context=context,mode=mode)
-
-        new_row = {'document_id': post['id'], 'num_posts_in_conversation': num_posts_in_conversation, 
-        'conversation_length': conversation_length,  
-        'violence_label': specific_post_classification['label'], 'intent_label': specific_post_intent_of_violence, 
-        'call_to_action': specific_post_call_to_action, 'flagged_issues': specific_post_classification['flagged_issues']}
+            new_row = {'document_id': post['id'], 'num_posts_in_conversation': num_posts_in_conversation, 
+            'conversation_length': conversation_length,  
+            'violence_label': specific_post_classification['label'], 'intent_label': specific_post_intent_of_violence, 
+            'call_to_action': specific_post_call_to_action, 'flagged_issues': specific_post_classification['flagged_issues']}
+            
+        except Exception as e:
+            new_row = {'document_id': post['id'], 'num_posts_in_conversation': num_posts_in_conversation, 
+            'conversation_length': conversation_length,  
+            'violence_label': -1, 'intent_label': "None", 
+            'call_to_action': "None", 'flagged_issues': "None"}
 
         # Convert new_row to a DataFrame and concatenate with the existing DataFrame
         new_row_df = pd.DataFrame([new_row])

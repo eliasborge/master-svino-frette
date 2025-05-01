@@ -1,5 +1,5 @@
 from pydantic import BaseModel, conlist
-from typing import List
+from typing import List, Literal
 from .agent import Agent
 
 
@@ -81,7 +81,7 @@ class ClassificationAgent(Agent):
              )
     def schema(self):
         class Classification(BaseModel):
-            label: int
+            label: Literal[0, 1, 2]
             flagged_issues: List[int]
 
         class ClassificationSchema(BaseModel):
