@@ -121,6 +121,4 @@ for index,row in grouped_messages.iterrows():
 ### COLLECTION OF DATA ###
 
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
-collected_data.to_csv(f"data/testdata/test_results_from_idun/neighbors/neighbor_{model}_100first.csv", index=False)
-efficiency_data.to_csv(f"data/testdata/test_results_from_idun/neighbors/neighbor_efficiency_{model}_100first.csv", index=False)
-
+collected_data.to_csv(f"data/testdata/test_results_from_idun/neighbors/neighbor_{model}_{timestamp}.csv", index=False)
