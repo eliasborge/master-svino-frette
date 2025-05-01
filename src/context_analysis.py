@@ -62,7 +62,7 @@ for index,row in grouped_messages.iterrows():
         specific_post_intent_of_violence = specific_post_intent['intent_of_violence']
 
         specific_post_classification = classification_agent.__call__(specific_post_content, framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent_of_violence, call_to_action=specific_post_call_to_action, context=context,mode=mode)
-        print("done")
+
 
         if(topicWasAnalysed):
             new_row = {'document_id': post['id'], 'num_posts_in_conversation': num_posts_in_conversation, 
