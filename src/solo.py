@@ -7,8 +7,8 @@ import time
 
 
 
-# model = "mistral"
-model = "mistral-nemo"
+model = "mistral"
+# model = "mistral-nemo"
 # model = "mistral-small"
 
 ### Logging
