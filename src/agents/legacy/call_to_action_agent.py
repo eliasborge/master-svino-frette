@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from .agent import Agent
+from ..agent import Agent
 
 class CallToActionAgent(Agent):
     def __init__(self, model):

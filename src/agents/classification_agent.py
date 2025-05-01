@@ -3,20 +3,19 @@ from typing import List
 from .agent import Agent
 
 
-class MessageValidationAgent(Agent):
+class ClassificationAgent(Agent):
     def __init__(self, model):
         super().__init__(model)
 
     def system(self):
         return f"""
-        You are a Validation Agent. Your role is to verify and finalize the classification of social media posts, ensuring logical consistency and completeness across agent outputs. You must reason through your decisions before assigning a single label to each slot.
+        You are a Classification Agent. Your role is to verify and finalize the classification of social media posts, ensuring logical consistency and completeness across agent outputs. You must reason through your decisions before assigning a single label to each slot.
 
-        **Validation Scope:**
-        You will evaluate the following agent outputs:
+        **Clasification Scope:**
+        You will consider the following agent outputs:
         - **FramingAgent**: Identifies whether the content explicitly states its intentions, or if there are implicit meanings (e.g., sarcasm, irony).
-        - **OthernessAgent**: Detects if a group is labeled as an 'out-group' with negative sentiment.
-        - **IntentAgent**: Assesses if there is direct violent intent toward the target group.
-        - **CallToActionAgent**: Identifies if the content encourages others to perform violent actions against the target group.
+        - **IntentAgent**: Assesses if there is direct violent intent or call to action rhetoric directed at someone.
+
 
         **Classification Rules:**
         - Content should **only** be classified as 'Violence risk' (**label 2**) if there is **clear intent to harm** either oneself, an individual or a group.
@@ -37,21 +36,19 @@ class MessageValidationAgent(Agent):
 
         **Output Format:**
         {{
-            "validation": {{
-                "validated_label": "0/1/2",
+            "classification": {{
+                "label": "0/1/2",
                 "flagged_issues": [0/1/2/3/4]
             }}
         }}
         """
 
-    def prompt(self, content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context,mode):
+    def prompt(self, content, framing_style, framing_tool, intent_of_violence, call_to_action, context,mode):
         
         if mode == "no-context":
             return (
                 f"Assess the classification of this content: {content}.\n"
                 f"Given the analysis below, reason thoroughly before assigning a classification:\n"
-                f"- Otherness Detected: {otherness_boolean}\n"
-                f"- Target Group: {target_group}\n"
                 f"- Framing: {framing_style} using {framing_tool}\n"
                 f"- Intent of Violence: {intent_of_violence}\n"
                 f"- Call to Action: {call_to_action}\n\n"
@@ -64,8 +61,6 @@ class MessageValidationAgent(Agent):
 
                 f"Assess the classification of this content: {content}.\n"
                 f"Given the analysis below, reason thoroughly before assigning a classification:\n"
-                f"- Otherness Detected: {otherness_boolean}\n"
-                f"- Target Group: {target_group}\n"
                 f"- Framing: {framing_style} using {framing_tool}\n"
                 f"- Intent of Violence: {intent_of_violence}\n"
                 f"- Call to Action: {call_to_action}\n\n"
@@ -79,28 +74,25 @@ class MessageValidationAgent(Agent):
 
                 f"Assess the classification of this content: {content}.\n"
                 f"Given the analysis below, reason thoroughly before assigning a classification:\n"
-                f"- Otherness Detected: {otherness_boolean}\n"
-                f"- Target Group: {target_group}\n"
                 f"- Framing: {framing_style} using {framing_tool}\n"
                 f"- Intent of Violence: {intent_of_violence}\n"
                 f"- Call to Action: {call_to_action}\n\n"
                
              )
     def schema(self):
-        class ValidationContent(BaseModel):
-            validated_label: int
-            validation_status: str
+        class Classification(BaseModel):
+            label: int
             flagged_issues: List[int]
 
-        class ValidationSchema(BaseModel):
-            validation: ValidationContent
+        class ClassificationSchema(BaseModel):
+            classification: Classification
 
-        return ValidationSchema.model_json_schema()
+        return ClassificationSchema.model_json_schema()
 
-    def __call__(self, content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context,mode:str, output_key: str = "validation"):
+    def __call__(self, content, framing_style, framing_tool, intent_of_violence, call_to_action, context,mode:str, output_key: str = "classification"):
         output = self.generate(
             system_prompt=self.system(),
-            prompt=self.prompt(content, otherness_boolean, target_group, framing_style, framing_tool, intent_of_violence, call_to_action, context,mode),
+            prompt=self.prompt(content, framing_style, framing_tool, intent_of_violence, call_to_action, context,mode),
             schema=self.schema(),
             model=self.model
         )
