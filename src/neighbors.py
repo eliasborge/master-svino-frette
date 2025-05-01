@@ -8,9 +8,7 @@ from .agents.classification_agent import ClassificationAgent
 
 from datetime import datetime
 import pandas as pd
-import tracemalloc
 import time
-import psutil
 
 
 model = "mistral"
