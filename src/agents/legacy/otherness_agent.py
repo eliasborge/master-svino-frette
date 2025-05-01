@@ -1,6 +1,6 @@
 from pydantic import BaseModel, conlist
 from typing import List
-from .agent import Agent
+from ..agent import Agent
 
 
 class OthernessAgent(Agent):
