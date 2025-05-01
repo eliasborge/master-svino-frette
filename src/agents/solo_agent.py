@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Literal
 from .agent import Agent
 
 class SoloAgent(Agent):
@@ -41,7 +41,7 @@ class SoloAgent(Agent):
 
     def schema(self):
         class ViolentResult(BaseModel):
-            violent_label: int
+            violent_label: Literal[0, 1, 2]
             flagged_issues: List[int]
 
         class ViolentSchema(BaseModel):
