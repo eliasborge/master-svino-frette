@@ -11,7 +11,7 @@ class ClassificationAgent(Agent):
         return f"""
         You are a Classification Agent. Your role is to verify and finalize the classification of social media posts, ensuring logical consistency and completeness across agent outputs. You must reason through your decisions before assigning a single label to each slot.
 
-        **Clasification Scope:**
+        **Classification Scope:**
         You will consider the following agent outputs:
         - **FramingAgent**: Identifies whether the content explicitly states its intentions, or if there are implicit meanings (e.g., sarcasm, irony).
         - **IntentAgent**: Assesses if there is direct violent intent or call to action rhetoric directed at someone.
