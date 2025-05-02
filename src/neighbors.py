@@ -11,7 +11,6 @@ import pandas as pd
 import time
 
 
-model = "mistral-nemo"
 model = "mistral"
 #model = "mistral-nemo"
 # model = "mistral-small"
