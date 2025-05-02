@@ -8,10 +8,10 @@ from .agents.classification_agent import ClassificationAgent
 from datetime import datetime
 import pandas as pd
 
-model = "mistral"
+#model = "mistral"
 #model = "mistral-nemo"
 #model = "mistral-small"
-
+model = "gemma3:27b"
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
 
@@ -83,7 +83,6 @@ for index,row in grouped_messages.iterrows():
             'call_to_action': "None", 'flagged_issues': "None",
             'row_duration_sec': row_duration_sec}
 
-        print(new_row.values())
         # Convert new_row to a DataFrame and concatenate with the existing DataFrame
         new_row_df = pd.DataFrame([new_row])
         collected_data = pd.concat([collected_data, new_row_df], ignore_index=True)
