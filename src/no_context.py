@@ -1,3 +1,4 @@
+import time
 from .agents.legacy.call_to_action_agent import CallToActionAgent
 from .agents.framing_agent import FramingAgent
 from .agents.legacy.otherness_agent import OthernessAgent
@@ -14,6 +15,9 @@ model = "mistral"
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
 
+### Logging
+timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+start_time = time.time()
 
 ### Due to the size of the topic threads, they haev been split into chunks ###
 
@@ -25,7 +29,7 @@ grouped_messages = grouped_messages
 ###TESTING###
 ### Due to the size of the topic threads, they haev been split into chunks ###
 
-collected_data = pd.DataFrame(columns=['document_id','num_posts_in_conversation','conversation_length','violence_label','intent_label','call_to_action','flagged_issues'])
+collected_data = pd.DataFrame(columns=['document_id','num_posts_in_conversation','conversation_length','violence_label','intent_label','call_to_action','flagged_issues', 'row_duration_sec'])
 
 otherness_agent = OthernessAgent(model)
 framing_agent = FramingAgent(model)
@@ -37,7 +41,7 @@ call_to_action_agent = CallToActionAgent(model)
 context = "whatever, irrelevant"
 
 for index,row in grouped_messages.iterrows():
-
+    row_start_time = time.time()
     content_with_ids = df
     raw_content = row['content']
     content_list = raw_content.split("###---###")
@@ -61,16 +65,21 @@ for index,row in grouped_messages.iterrows():
 
             specific_post_classification = classification_agent.__call__(specific_post_content, framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent_of_violence, call_to_action=specific_post_call_to_action, context=context,mode=mode)
 
+            row_duration_sec = time.time() - row_start_time
+
             new_row = {'document_id': post['id'], 'num_posts_in_conversation': num_posts_in_conversation, 
             'conversation_length': conversation_length,  
             'violence_label': specific_post_classification['label'], 'intent_label': specific_post_intent_of_violence, 
-            'call_to_action': specific_post_call_to_action, 'flagged_issues': specific_post_classification['flagged_issues']}
+            'call_to_action': specific_post_call_to_action, 'flagged_issues': specific_post_classification['flagged_issues'],
+            'row_duration_sec': row_duration_sec}
             
         except Exception as e:
+            row_duration_sec = time.time() - row_start_time
             new_row = {'document_id': post['id'], 'num_posts_in_conversation': num_posts_in_conversation, 
             'conversation_length': conversation_length,  
             'violence_label': -1, 'intent_label': "None", 
-            'call_to_action': "None", 'flagged_issues': "None"}
+            'call_to_action': "None", 'flagged_issues': "None",
+            'row_duration_sec': row_duration_sec}
 
         # Convert new_row to a DataFrame and concatenate with the existing DataFrame
         new_row_df = pd.DataFrame([new_row])
@@ -78,6 +87,5 @@ for index,row in grouped_messages.iterrows():
 
         
 ### COLLECTION OF DATA ###
-timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 
 collected_data.to_csv(f"data/testdata/test_results_from_idun/no_context/no_context_{model}_{timestamp}.csv",index=False)
