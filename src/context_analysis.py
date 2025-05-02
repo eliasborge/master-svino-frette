@@ -84,7 +84,7 @@ for index,row in grouped_messages.iterrows():
                 'row_duration_sec': row_duration_sec}
                 
         
-
+        print(new_row.values())
         # Convert new_row to a DataFrame and concatenate with the existing DataFrame
         new_row_df = pd.DataFrame([new_row])
         collected_data = pd.concat([collected_data, new_row_df], ignore_index=True)

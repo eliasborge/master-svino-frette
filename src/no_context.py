@@ -72,6 +72,8 @@ for index,row in grouped_messages.iterrows():
             'violence_label': specific_post_classification['label'], 'intent_label': specific_post_intent_of_violence, 
             'call_to_action': specific_post_call_to_action, 'flagged_issues': specific_post_classification['flagged_issues'],
             'row_duration_sec': row_duration_sec}
+
+            
             
         except Exception as e:
             row_duration_sec = time.time() - row_start_time
@@ -81,6 +83,7 @@ for index,row in grouped_messages.iterrows():
             'call_to_action': "None", 'flagged_issues': "None",
             'row_duration_sec': row_duration_sec}
 
+        print(new_row.values())
         # Convert new_row to a DataFrame and concatenate with the existing DataFrame
         new_row_df = pd.DataFrame([new_row])
         collected_data = pd.concat([collected_data, new_row_df], ignore_index=True)

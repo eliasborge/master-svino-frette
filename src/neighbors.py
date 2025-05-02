@@ -111,6 +111,7 @@ for index,row in grouped_messages.iterrows():
             'violence_label': -1, 'intent_label': "None", 
             'call_to_action': "None", 'flagged_issues': "None", }
 
+        print(new_row.values())
         # Convert new_row to a DataFrame and concatenate with the existing DataFrame
         new_row_df = pd.DataFrame([new_row])
         collected_data = pd.concat([collected_data, new_row_df], ignore_index=True)
