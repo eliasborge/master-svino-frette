@@ -12,7 +12,7 @@ def generate(
     model: str,
     schema: Optional[JsonSchemaValue] = None,
     parse: bool = True,
-    num_ctx: int = 48000,
+    num_ctx: int = 32000,
     num_predict: int = 4000,
     temperature: float = 0.0,
 ) -> str:
