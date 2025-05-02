@@ -7,9 +7,9 @@ import time
 
 
 
-model = "mistral"
+# model = "mistral"
 # model = "mistral-nemo"
-# model = "mistral-small"
+model = "mistral-small"
 
 ### Logging
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
@@ -23,7 +23,7 @@ grouped_messages = grouped_df
 solo_agent = SoloAgent(model)
 
 # Prepare DataFrame to store results
-collected_data = pd.DataFrame(columns=['video_num','document_id', 'violence_label', 'row_duration_sec'])
+collected_data = pd.DataFrame(columns=['video_num','document_id', 'violence_label', 'row_duration_sec', 'flagged_issues'])
 
 
 print("starting solo processing")
