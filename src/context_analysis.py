@@ -11,9 +11,9 @@ from datetime import datetime
 import pandas as pd
 
 #model = "mistral"
-#model = "mistral-nemo"
+model = "mistral-nemo"
 # model = "mistral-small"
-model = "gemma3:27b"
+# model = "gemma3:27b"
 
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
