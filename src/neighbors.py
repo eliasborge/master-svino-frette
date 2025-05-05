@@ -11,10 +11,10 @@ import pandas as pd
 import time
 
 
-#model = "mistral"
+model = "mistral"
 #model = "mistral-nemo"
 # model = "mistral-small"
-model = "gemma3:12b"
+#model = "gemma3:12b"
 # model = "gemma3:27b"
 
 ### Logging
