@@ -9,7 +9,9 @@ import time
 
 # model = "mistral"
 # model = "mistral-nemo"
-model = "mistral-small"
+# model = "mistral-small"
+# model = "gemma3:27b"
+model = "gemma3:12b"
 
 ### Logging
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
