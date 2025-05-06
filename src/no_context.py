@@ -8,8 +8,8 @@ from .agents.classification_agent import ClassificationAgent
 from datetime import datetime
 import pandas as pd
 
-model = "mistral"
-#model = "mistral-nemo"
+#model = "mistral"
+model = "mistral-nemo"
 #model = "mistral-small"
 # model = "gemma3:27b"
 
