@@ -24,6 +24,7 @@ for model in modelList:
     agent = ContentFilterAgent(model)
     for request in requests:
         reply = agent.__call__(request)
+        print(reply)
         results.append({
             "model": model,
             "request": request,
