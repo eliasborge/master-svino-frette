@@ -11,8 +11,8 @@ import time
 # model = "mistral-nemo"
 # model = "mistral-small"
 # model = "gemma3:27b"
-#model = "gemma3:12b"
-model = "qwen3:8b"
+model = "gemma3:12b"
+#model = "qwen3:8b"
 
 ### Logging
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
