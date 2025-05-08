@@ -7,11 +7,11 @@ import time
 
 
 
-# model = "mistral"
+model = "mistral"
 # model = "mistral-nemo"
 # model = "mistral-small"
 # model = "gemma3:27b"
-model = "gemma3:12b"
+# model = "gemma3:12b"
 #model = "qwen3:8b"
 
 ### Logging
@@ -19,14 +19,15 @@ timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 start_time = time.time()
 ####
 
-grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
-grouped_messages = grouped_df
+df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
+grouped_messages = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
+
 
 
 singlePrompt_agent = SinglePromptAgent(model)
 
 # Prepare DataFrame to store results
-collected_data = pd.DataFrame(columns=['video_num','document_id', 'violence_label', 'row_duration_sec', 'flagged_issues'])
+collected_data = pd.DataFrame(columns=['document_id', 'violence_label', 'row_duration_sec', 'flagged_issues'])
 
 
 print("starting singlePrompt_agent processing")
@@ -39,18 +40,20 @@ for index, row in grouped_messages.iterrows():
     content_list = content.split("###---###")   
     results = []
 
-    for i in content_list:
+    for index,post in df[df['id'].isin(list_of_ids)].iterrows():
+        content = post['content']
         try:
-            result = singlePrompt_agent.__call__(i)
+            result = singlePrompt_agent.__call__(content)
+            print(result)
         except ValidationError as e:
-            print(f"Validation error for content: {i}, Error: {e}")
+            print(f"Validation error for content: {content}, Error: {e}")
             result = {'violent_label': None, 'flagged_issues': [1]}
         results.append(result)
 
     row_duration_sec = time.time() - row_start_time
 
     for i, flag in enumerate(results):
-        new_row = {'video_num': list_of_ids[i].split('_')[0],'document_id':list_of_ids[i], 'violence_label': flag['violent_label'], 'flagged_issues': flag['flagged_issues'], 'row_duration_sec': row_duration_sec}
+        new_row = {'document_id':post['id'], 'violence_label': flag['violent_label'], 'flagged_issues': flag['flagged_issues'], 'row_duration_sec': row_duration_sec}
         new_row_df = pd.DataFrame([new_row])
         collected_data = pd.concat([collected_data, new_row_df], ignore_index=True)
 
