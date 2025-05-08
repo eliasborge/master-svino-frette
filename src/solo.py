@@ -1,5 +1,5 @@
 
-from .agents.solo_agent import SoloAgent
+from .agents.SinglePrompt_agent import SinglePromptAgent
 from datetime import datetime
 from pydantic import ValidationError
 import pandas as pd
@@ -23,13 +23,13 @@ grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCor
 grouped_messages = grouped_df
 
 
-solo_agent = SoloAgent(model)
+singlePrompt_agent = SinglePromptAgent(model)
 
 # Prepare DataFrame to store results
 collected_data = pd.DataFrame(columns=['video_num','document_id', 'violence_label', 'row_duration_sec', 'flagged_issues'])
 
 
-print("starting solo processing")
+print("starting singlePrompt_agent processing")
 
 for index, row in grouped_messages.iterrows():
     row_start_time = time.time()
@@ -41,7 +41,7 @@ for index, row in grouped_messages.iterrows():
 
     for i in content_list:
         try:
-            result = solo_agent.__call__(i)
+            result = singlePrompt_agent.__call__(i)
         except ValidationError as e:
             print(f"Validation error for content: {i}, Error: {e}")
             result = {'violent_label': None, 'flagged_issues': [1]}

@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import List, Literal
 from .agent import Agent
 
-class SoloAgent(Agent):
+class SinglePromptAgent(Agent):
     def __init__(self, model):
         super().__init__(model)
 
