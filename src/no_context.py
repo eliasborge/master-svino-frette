@@ -15,7 +15,7 @@ context = "whatever, irrelevant"
 
 ### Data Loading ###
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
-grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
+grouped_messages = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
 
 ### Logging Setup ###
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
