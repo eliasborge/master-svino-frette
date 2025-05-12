@@ -8,27 +8,21 @@ from .agents.classification_agent import ClassificationAgent
 from datetime import datetime
 import pandas as pd
 
-#model = "mistral"
-model = "mistral-nemo"
+model = "mistral"
+#model = "mistral-nemo"
 #model = "mistral-small"
 # model = "gemma3:27b"
 
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
-grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
+grouped_messages = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
 
 ### Logging
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 start_time = time.time()
 
-### Due to the size of the topic threads, they haev been split into chunks ###
-
-grouped_messages = grouped_df
 
 mode="no-context"
-###TESTING###
-grouped_messages = grouped_messages
-###TESTING###
-### Due to the size of the topic threads, they haev been split into chunks ###
+
 
 collected_data = pd.DataFrame(columns=['document_id','num_posts_in_conversation','conversation_length','violence_label','intent_label','call_to_action','flagged_issues', 'row_duration_sec'])
 
@@ -50,6 +44,8 @@ for index,row in grouped_messages.iterrows():
     num_posts_in_conversation = row['num_posts']
     conversation_length = row['content_length']
     list_of_ids:list = row['id'].split(", ")
+
+    print(list_of_ids)
 
     print(f"Processing row {index + 1} of {len(grouped_messages)}...")
 
