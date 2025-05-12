@@ -4,44 +4,44 @@ from .agents.framing_agent import FramingAgent
 from .agents.legacy.otherness_agent import OthernessAgent
 from .agents.intent_agent import IntentAgent
 from .agents.classification_agent import ClassificationAgent
-
 from datetime import datetime
+from model_config import AVAILABLE_MODELS
 import pandas as pd
 
-#model = "mistral"
-model = "mistral-nemo"
-#model = "mistral-small"
-# model = "gemma3:27b"
+### Configuration ###
+model = AVAILABLE_MODELS[0]  # mistral
+mode = "no-context"
+context = "whatever, irrelevant"
 
+### Data Loading ###
 df = pd.read_csv("data/testdata/processed_VideoCommentsThreatCorpus.csv")
 grouped_df = pd.read_csv("data/testdata/grouped_processed_VideoCommentsThreatCorpus.csv")
 
-### Logging
+### Logging Setup ###
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 start_time = time.time()
 
-### Due to the size of the topic threads, they haev been split into chunks ###
-
-grouped_messages = grouped_df
-
-mode="no-context"
-###TESTING###
-grouped_messages = grouped_messages
-###TESTING###
-### Due to the size of the topic threads, they haev been split into chunks ###
-
-collected_data = pd.DataFrame(columns=['document_id','num_posts_in_conversation','conversation_length','violence_label','intent_label','call_to_action','flagged_issues', 'row_duration_sec'])
-
+### Agent Initialization ###
 otherness_agent = OthernessAgent(model)
 framing_agent = FramingAgent(model)
 intent_agent = IntentAgent(model)
 classification_agent = ClassificationAgent(model)
 call_to_action_agent = CallToActionAgent(model)
 
+### Output Storage Initialization ###
+collected_data = pd.DataFrame(columns=[
+    'document_id',
+    'num_posts_in_conversation',
+    'conversation_length',
+    'violence_label',
+    'intent_label',
+    'call_to_action',
+    'flagged_issues',
+    'row_duration_sec'
+])
 
-context = "whatever, irrelevant"
 
-for index,row in grouped_messages.iterrows():
+for index,row in grouped_df.iterrows():
     row_start_time = time.time()
     content_with_ids = df
     raw_content = row['content']
@@ -51,9 +51,7 @@ for index,row in grouped_messages.iterrows():
     conversation_length = row['content_length']
     list_of_ids:list = row['id'].split(", ")
 
-    print(f"Processing row {index + 1} of {len(grouped_messages)}...")
-
-    # print(list_of_ids)
+    print(f"Processing row {index + 1} of {len(grouped_df)}...")
 
     for index,post in df[df['id'].isin(list_of_ids)].iterrows():
         specific_post_content = post['content']
@@ -63,7 +61,6 @@ for index,row in grouped_messages.iterrows():
             specific_post_intent = intent_agent.__call__(specific_post_content, specific_post_framing, context,mode=mode)
             specific_post_call_to_action = specific_post_intent['call_to_action']
             specific_post_intent_of_violence = specific_post_intent['intent_of_violence']
-
             specific_post_classification = classification_agent.__call__(specific_post_content, framing_style = specific_post_framing['framingStyle'], framing_tool = specific_post_framing['framingTool'], intent_of_violence=specific_post_intent_of_violence, call_to_action=specific_post_call_to_action, context=context,mode=mode)
 
             row_duration_sec = time.time() - row_start_time
@@ -74,9 +71,8 @@ for index,row in grouped_messages.iterrows():
             'call_to_action': specific_post_call_to_action, 'flagged_issues': specific_post_classification['flagged_issues'],
             'row_duration_sec': row_duration_sec}
 
-            
-            
         except Exception as e:
+            print(f"Error processing post {post['id']}: {e}")
             row_duration_sec = time.time() - row_start_time
             new_row = {'document_id': post['id'], 'num_posts_in_conversation': num_posts_in_conversation, 
             'conversation_length': conversation_length,  
