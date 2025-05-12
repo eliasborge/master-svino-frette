@@ -41,7 +41,7 @@ collected_data = pd.DataFrame(columns=[
 ])
 
 
-for index,row in grouped_df.iterrows():
+for index,row in grouped_messages.iterrows():
     row_start_time = time.time()
     content_with_ids = df
     raw_content = row['content']
@@ -51,7 +51,7 @@ for index,row in grouped_df.iterrows():
     conversation_length = row['content_length']
     list_of_ids:list = row['id'].split(", ")
 
-    print(f"Processing row {index + 1} of {len(grouped_df)}...")
+    print(f"Processing row {index + 1} of {len(grouped_messages)}...")
 
     for index,post in df[df['id'].isin(list_of_ids)].iterrows():
         specific_post_content = post['content']
