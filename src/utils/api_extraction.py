@@ -4,6 +4,9 @@ from pydantic.types import JsonSchemaValue
 from typing import Optional
 from json import loads
 
+"""
+Adapted from: https://tollefj.folk.ntnu.no/books/local-llm/content/01-landing.html
+"""
 
 
 def generate(

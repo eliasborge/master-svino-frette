@@ -2,6 +2,10 @@ from abc import ABC, abstractmethod
 from typing import Any
 from src.utils.api_extraction import generate
 
+"""
+Adapted from: https://tollefj.folk.ntnu.no/books/local-llm/content/01-landing.html
+"""
+
 class Agent(ABC):
     def __init__(self, model: str):
         self.generate = generate  # here, generate is found above, this can also be imported in the agent interface
