@@ -48,7 +48,8 @@ for model in AVAILABLE_MODELS:
         'intent_label',
         'call_to_action',
         'flagged_issues',
-        'row_duration_sec'
+        'row_duration_sec',
+        'framing_style', 'framing_tool'
     ])
 
 
@@ -80,7 +81,7 @@ for model in AVAILABLE_MODELS:
                 'conversation_length': conversation_length,  
                 'violence_label': specific_post_classification['label'], 'intent_label': specific_post_intent_of_violence, 
                 'call_to_action': specific_post_call_to_action, 'flagged_issues': specific_post_classification['flagged_issues'],
-                'row_duration_sec': row_duration_sec}
+                'row_duration_sec': row_duration_sec, 'framing_style': specific_post_framing['framingStyle'], 'framing_tool': specific_post_framing['framingTool']}
 
             except Exception as e:
                 print(f"Error processing post {post['id']}: {e}")
