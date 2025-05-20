@@ -13,7 +13,7 @@ AVAILABLE_MODELS = [
     # "qwen3:8b",
     # "qwen3:14b",
     "gemma3:12b",
-    "gemma3.27b"
+    "gemma3:27b"
 ]
 for model in AVAILABLE_MODELS:
     ### Data Loading 
