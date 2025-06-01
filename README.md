@@ -39,9 +39,23 @@ Ollama is required to run quantized LLMs locally.
 3. Start the Ollama service by running:
 
     ```bash
-    Pip install Ollama
     Ollama serve 
     ````
+4. Open another terminal
+   ```bash
+   ollama pull [SELECTED MODEL, e.g. mistral-small]
+   ollama run mistral-small
+   ```
+
+Models used in these experiments:
+- Mistral
+- Mistral NeMo
+- Mistral Small 3
+- Qwen 3 8B
+- Qwen 3 14B
+- Gemma 3 12B
+- Gemma 3 27B
+   
 All experiments were run on [IDUN](https://www.hpc.ntnu.no/idun/)
 
 ## Code Structure
@@ -64,4 +78,7 @@ The core logic for classification is located in the `src` directory. It is organ
   - `CHAB_pipeline.py` – Conversation History Agent-Based pipeline
   - `SP_pipeline.py` – Single-Prompt classification pipeline
   - `model_config.py` – configuration for models used in pipelines
+
+- **Ollama API**:
+  - `api_exctracion.py` - The API used to perform inference and generate completions with the Ollama server
     
