@@ -27,6 +27,7 @@ python --version
 
 ```bash
 pip install pydantic
+pip install ollama
 ```
 
 4. **Install Ollama**
