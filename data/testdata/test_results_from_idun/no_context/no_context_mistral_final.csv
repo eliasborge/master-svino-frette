@@ -2072,7 +2072,7 @@ document_id,num_posts_in_conversation,conversation_length,violence_label,intent_
 5_2125,39.0,9359,1,Low Intent of violence,No Call to Action,[],1.55009126663208
 5_2126,39.0,9359,1,No Intent of violence,No Call to Action,[],3.0120584964752197
 5_2127,39.0,9359,1,No Intent of violence,Low Call to Action,[],4.506830930709839
-5_2128,39.0,9359,2,High Intent of Violence,NA,[],5.944196462631226
+5_2128,39.0,9359,2,High Intent of Violence,no,[],5.944196462631226
 5_2129,39.0,9359,1,Low Intent of violence,No Call to Action,[],7.429458856582642
 5_2130,39.0,9359,0,No Intent of violence,Low Call to Action,[],8.940208911895752
 5_2131,39.0,9359,2,High Intent of violence,No Call to Action,[],10.406444549560547
